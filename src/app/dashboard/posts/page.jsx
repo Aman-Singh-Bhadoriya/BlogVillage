@@ -3,42 +3,110 @@ import { useEffect, useState } from "react";
 import {
   collection,
   getDocs,
-  query,
   where,
+  query,
   deleteDoc,
   doc,
 } from "firebase/firestore";
 import { db } from "../../utils/firebase";
-import PostForm from "./PostForm";
 import { useAuth } from "../../context/AuthContext";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Typography,
+  Box,
+  Snackbar,
+  Alert,
+  Skeleton,
+  IconButton,
+} from "@mui/material";
+import { Add, Edit, Delete } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+import Filter from "./Filter";
 
-export default function PostsPage() {
+export default function Page() {
   const [posts, setPosts] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [editingPost, setEditingPost] = useState(null);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const { user } = useAuth();
+  const router = useRouter();
 
-  // ✅ Function to fetch posts
+  // ✅ Fetch Posts
   const fetchPosts = async () => {
+    setLoading(true);
     if (user) {
       try {
-        const q = query(collection(db, "posts"), where("authorId", "==", user.uid));
+        // ✅ Fetch categories
+        const categorySnapshot = await getDocs(collection(db, "categories"));
+        const categoryMap = categorySnapshot.docs.reduce((acc, doc) => {
+          acc[doc.id] = doc.data().name;
+          return acc;
+        }, {});
+  
+        // ✅ Fetch posts
+        const q = query(
+          collection(db, "posts"),
+          where("authorId", "==", user.uid)
+        );
         const querySnapshot = await getDocs(q);
-        const postList = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+  
+        const postList = querySnapshot.docs.map((doc) => {
+          const postData = doc.data();
+          return {
+            id: doc.id,
+            ...postData,
+            category: categoryMap[postData.categoryId] || "N/A", // ✅ Map categoryId to category name
+          };
+        });
+  
         setPosts(postList);
+        setFilteredPosts(postList);
       } catch (error) {
         console.error("Error fetching posts:", error);
+        alert("Failed to load posts.");
+      } finally {
+        setLoading(false);
       }
     }
   };
+  
 
-  // ✅ Fetch posts on component mount
   useEffect(() => {
-    fetchPosts();
+    if (user) fetchPosts();
   }, [user]);
+
+  // ✅ Handle Filter Change
+  const handleFilterChange = ({ category, status }) => {
+    let filtered = posts;
+  
+    if (category) {
+      filtered = filtered.filter((post) => post.category === category);
+    }
+  
+    if (status) {
+      filtered = filtered.filter((post) => post.status === status);
+    }
+  
+    setFilteredPosts(filtered);
+  };
+  
+  // ✅ Open Post Form for New Post
+  const handleNewPost = () => {
+    router.push("/dashboard/posts/PostForm");
+  };
+
+  // ✅ Open Post Form for Editing
+  const handleEditPost = (postId) => {
+    router.push(`/dashboard/posts/PostForm?id=${postId}`);
+  };
 
   // ✅ Handle Post Deletion
   const handleDelete = async (postId) => {
@@ -50,131 +118,154 @@ export default function PostsPage() {
     try {
       await deleteDoc(doc(db, "posts", postId));
       setPosts(posts.filter((post) => post.id !== postId));
-      alert("Post deleted successfully!");
+      setFilteredPosts(posts.filter((post) => post.id !== postId));
+      setMessage("Post deleted successfully!");
+      setOpenSnackbar(true);
     } catch (error) {
       console.error("Error deleting post:", error);
       alert("Failed to delete post");
     }
   };
 
-  // ✅ Handle Post Creation/Update
-  const handlePostCreatedOrUpdated = async () => {
-    setShowForm(false);
-    setEditingPost(null);
-    await fetchPosts(); // ✅ Refresh posts after creation or update
-  };
-
-  // ✅ Handle Editing Post
-  const handleEdit = (post) => {
-    setEditingPost(post);
-    setShowForm(true);
-  };
-
   return (
-    <div className="p-5">
-      {/* ✅ Header with New Post Button */}
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">My Posts</h1>
-        <button
-          onClick={() => {
-            setShowForm(!showForm);
-            setEditingPost(null);
+    <Box p={4} sx={{ backgroundColor: "#f9fafb", minHeight: "100vh" }}>
+      {/* ✅ Header */}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <Typography variant="h4" fontWeight="bold" color="#333">
+          My Posts
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Add />}
+          onClick={handleNewPost}
+          sx={{
+            textTransform: "none",
+            fontSize: "16px",
+            fontWeight: "500",
+            boxShadow: "none",
+            borderRadius: "8px",
           }}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
         >
-          {showForm ? "Cancel" : "New Post"}
-        </button>
-      </div>
+          New Post
+        </Button>
+      </Box>
 
-      {/* ✅ New Post Form */}
-      {showForm && (
-        <PostForm
-          onPostCreated={handlePostCreatedOrUpdated}
-          post={editingPost}
-        />
-      )}
+      {/* ✅ Filter Component */}
+      <Filter onFilterChange={handleFilterChange} />
 
-      {/* ✅ Table for Previous Posts */}
-      <div className="overflow-x-auto mt-5">
-        {posts.length === 0 ? (
-          <p>No posts yet.</p>
-        ) : (
-          <table className="min-w-full bg-white border border-gray-300 shadow-md">
-            <thead>
-              <tr className="bg-gray-100 border-b">
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">
-                  ID
-                </th>
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">
-                  Title
-                </th>
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">
-                  Description
-                </th>
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">
-                  Image
-                </th>
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {posts.map((post, index) => (
-                <tr key={post.id} className="border-b">
-                  {/* ✅ Index */}
-                  <td className="px-4 py-2">{index + 1}</td>
-
-                  {/* ✅ Title */}
-                  <td className="px-4 py-2">{post.title}</td>
-
-                  {/* ✅ Content */}
-                  <td className="px-4 py-2">
-                    {post.content.length > 50
-                      ? `${post.content.slice(0, 50)}...`
-                      : post.content}
-                  </td>
-
-                  {/* ✅ Image */}
-                  <td className="px-4 py-2">
-                    {post.image ? (
-                      <img
-                        src={post.image}
-                        alt="Post"
-                        className="w-20 h-20 object-cover rounded-md"
-                        onError={(e) => {
-                          e.target.src =
-                            "https://via.placeholder.com/100?text=No+Image"; 
-                        }}
-                      />
-                    ) : (
-                      <span>No image</span>
-                    )}
-                  </td>
-
-                  {/* ✅ Actions */}
-                  <td className="px-4 py-2">
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleEdit(post)}
-                        className="bg-yellow-500 text-white px-3 py-1 rounded-md"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(post.id)}
-                        className="bg-red-500 text-white px-3 py-1 rounded-md"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+      {/* ✅ Posts Table */}
+      <TableContainer
+        component={Paper}
+        sx={{
+          mt: 3,
+          borderRadius: "12px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          overflow: "hidden",
+        }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow
+              sx={{
+                background: "linear-gradient(90deg, #4f46e5, #6366f1)",
+              }}
+            >
+              {[
+                "ID",
+                "Title",
+                "Description",
+                "Category",
+                "Status",
+                "Image",
+                "Actions",
+              ].map((heading) => (
+                <TableCell
+                  key={heading}
+                  sx={{
+                    fontWeight: "bold",
+                    color: "#ffffff",
+                    padding: "12px",
+                    textAlign: "center",
+                  }}
+                >
+                  {heading}
+                </TableCell>
               ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-    </div>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {loading ? (
+              [...Array(5)].map((_, index) => (
+                <TableRow key={index}>
+                  <TableCell colSpan={7}>
+                    <Skeleton variant="text" />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : filteredPosts.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} align="center">
+                  No posts found.
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredPosts.map((post, index) => (
+                <TableRow
+                  key={post.id}
+                  sx={{
+                    "&:nth-of-type(odd)": { backgroundColor: "#fafafa" },
+                    "&:hover": { backgroundColor: "#f3f4f6" },
+                    borderBottom: "1px solid #e5e7eb",
+                  }}
+                >
+                  <TableCell align="center">{index + 1}</TableCell>
+                  <TableCell align="center">{post.title}</TableCell>
+                  <TableCell align="center">{post.content}</TableCell>
+                  <TableCell align="center">{post.category || "N/A"}</TableCell>
+                  
+                  <TableCell align="center">{post.status || "N/A"}</TableCell>
+                  <TableCell align="center">
+                    {post.image && (
+                      <img src={post.image} alt="Post" width={50} height={50} />
+                    )}
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton
+                      onClick={() => handleEditPost(post.id)}
+                      color="primary"
+                    >
+                      <Edit />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => handleDelete(post.id)}
+                      color="error"
+                    >
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {/* ✅ Snackbar */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert onClose={() => setOpenSnackbar(false)} severity="success">
+          {message}
+        </Alert>
+      </Snackbar>
+    </Box>
   );
 }

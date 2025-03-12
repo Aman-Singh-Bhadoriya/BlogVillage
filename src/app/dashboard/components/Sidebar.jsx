@@ -9,7 +9,7 @@ export default function AdminSidebar() {
   const menuItems = [
     {
       name: "Dashboard",
-      link: "/",
+      link: "/dashboard",
       icon: <Gauge size={20} />,
     },
     {
