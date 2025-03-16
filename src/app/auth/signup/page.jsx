@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { signUp } from "../../utils/auth";
 import { useRouter } from "next/navigation";
+import { TextField, Button, Typography, Box, CircularProgress } from "@mui/material";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ export default function Signup() {
     confirmPassword: "",
   });
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -24,104 +26,143 @@ export default function Signup() {
     e.preventDefault();
     setError(null);
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match!");
       return;
     }
 
+    const fullName = `${formData.firstName} ${formData.middleName ? formData.middleName + ' ' : ''}${formData.lastName}`;
+
     try {
-      await signUp(formData.email, formData.password);
-      router.push("/dashboard"); // Redirect to dashboard after signup
+      setLoading(true);
+      await signUp(formData.email, formData.password, fullName, formData.mobile);
+      router.push("/dashboard");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">Create an Account</h2>
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-        
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md">
+        {/* Title */}
+        <Typography variant="h4" className="text-center font-bold text-blue-600 mb-6">
+          Create an Account
+        </Typography>
+
+        {/* Error Message */}
+        {error && (
+          <Typography variant="body2" className="text-center text-red-500 mb-4">
+            {error}
+          </Typography>
+        )}
+
+        {/* Signup Form */}
         <form onSubmit={handleSignUp} className="flex flex-col gap-4">
-          <div className="flex gap-2">
-            <input
-              type="text"
+          {/* Name Fields */}
+          <Box display="flex" gap={1}>
+            <TextField
+              label="First Name"
               name="firstName"
-              placeholder="First Name"
-              className="p-2 border rounded w-1/3"
               value={formData.firstName}
               onChange={handleChange}
               required
+              fullWidth
+              size="small"
             />
-            <input
-              type="text"
+            <TextField
+              label="Middle Name"
               name="middleName"
-              placeholder="Middle Name"
-              className="p-2 border rounded w-1/3"
               value={formData.middleName}
               onChange={handleChange}
+              fullWidth
+              size="small"
             />
-            <input
-              type="text"
+            <TextField
+              label="Last Name"
               name="lastName"
-              placeholder="Last Name"
-              className="p-2 border rounded w-1/3"
               value={formData.lastName}
               onChange={handleChange}
               required
+              fullWidth
+              size="small"
             />
-          </div>
+          </Box>
 
-          <input
-            type="text"
+          {/* Mobile Field */}
+          <TextField
+            label="Mobile Number"
+            type="tel"
             name="mobile"
-            placeholder="Mobile Number"
-            className="p-2 border rounded"
             value={formData.mobile}
             onChange={handleChange}
             required
+            fullWidth
+            size="small"
           />
 
-          <input
+          {/* Email Field */}
+          <TextField
+            label="Email Address"
             type="email"
             name="email"
-            placeholder="Email Address"
-            className="p-2 border rounded"
             value={formData.email}
             onChange={handleChange}
             required
+            fullWidth
+            size="small"
           />
 
-          <input
+          {/* Password Fields */}
+          <TextField
+            label="Password"
             type="password"
             name="password"
-            placeholder="Password"
-            className="p-2 border rounded"
             value={formData.password}
             onChange={handleChange}
             required
+            fullWidth
+            size="small"
           />
 
-          <input
+          <TextField
+            label="Confirm Password"
             type="password"
             name="confirmPassword"
-            placeholder="Confirm Password"
-            className="p-2 border rounded"
             value={formData.confirmPassword}
             onChange={handleChange}
             required
+            fullWidth
+            size="small"
           />
 
-          <button type="submit" className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
-            Sign Up
-          </button>
+          {/* Signup Button */}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            disabled={loading}
+            size="large"
+            className="mt-2"
+          >
+            {loading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Sign Up"
+            )}
+          </Button>
         </form>
 
-        <p className="text-center mt-4 text-sm">
-          Already have an account? <a href="/auth/login" className="text-blue-500">Log in</a>
-        </p>
+        {/* Link to Login */}
+        <Typography variant="body2" className="text-center mt-4">
+          Already have an account?{" "}
+          <a href="/auth/login" className="text-blue-500 hover:underline">
+            Log in
+          </a>
+        </Typography>
       </div>
     </div>
   );

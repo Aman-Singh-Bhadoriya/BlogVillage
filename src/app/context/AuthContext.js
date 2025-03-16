@@ -1,8 +1,8 @@
-"use client";
-
-import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../utils/firebase";
+"use client"
+import { createContext, useContext, useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../utils/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
 
@@ -11,9 +11,15 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("Auth state changed:", currentUser); // Debug log
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
+        if (userDoc.exists()) {
+          setUser({ uid: firebaseUser.uid, ...userDoc.data() });
+        }
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
@@ -22,15 +28,9 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user, loading }}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context; // ✅ Return the full context object, not just user
-};
+export const useAuth = () => useContext(AuthContext);

@@ -50,23 +50,23 @@ export default function Page() {
           acc[doc.id] = doc.data().name;
           return acc;
         }, {});
-  
+
         // ✅ Fetch posts
         const q = query(
           collection(db, "posts"),
           where("authorId", "==", user.uid)
         );
         const querySnapshot = await getDocs(q);
-  
+
         const postList = querySnapshot.docs.map((doc) => {
           const postData = doc.data();
           return {
             id: doc.id,
             ...postData,
-            category: categoryMap[postData.categoryId] || "N/A", // ✅ Map categoryId to category name
+            category: categoryMap[postData.categoryId] || "N/A",
           };
         });
-  
+
         setPosts(postList);
         setFilteredPosts(postList);
       } catch (error) {
@@ -77,7 +77,6 @@ export default function Page() {
       }
     }
   };
-  
 
   useEffect(() => {
     if (user) fetchPosts();
@@ -86,18 +85,18 @@ export default function Page() {
   // ✅ Handle Filter Change
   const handleFilterChange = ({ category, status }) => {
     let filtered = posts;
-  
+
     if (category) {
       filtered = filtered.filter((post) => post.category === category);
     }
-  
+
     if (status) {
       filtered = filtered.filter((post) => post.status === status);
     }
-  
+
     setFilteredPosts(filtered);
   };
-  
+
   // ✅ Open Post Form for New Post
   const handleNewPost = () => {
     router.push("/dashboard/posts/PostForm");
@@ -130,12 +129,7 @@ export default function Page() {
   return (
     <Box p={4} sx={{ backgroundColor: "#f9fafb", minHeight: "100vh" }}>
       {/* ✅ Header */}
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={3}
-      >
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h4" fontWeight="bold" color="#333">
           My Posts
         </Typography>
@@ -148,7 +142,6 @@ export default function Page() {
             textTransform: "none",
             fontSize: "16px",
             fontWeight: "500",
-            boxShadow: "none",
             borderRadius: "8px",
           }}
         >
@@ -216,19 +209,22 @@ export default function Page() {
               </TableRow>
             ) : (
               filteredPosts.map((post, index) => (
-                <TableRow
-                  key={post.id}
-                  sx={{
-                    "&:nth-of-type(odd)": { backgroundColor: "#fafafa" },
-                    "&:hover": { backgroundColor: "#f3f4f6" },
-                    borderBottom: "1px solid #e5e7eb",
-                  }}
-                >
+                <TableRow key={post.id} sx={{ borderBottom: "1px solid #e5e7eb" }}>
                   <TableCell align="center">{index + 1}</TableCell>
                   <TableCell align="center">{post.title}</TableCell>
-                  <TableCell align="center">{post.content}</TableCell>
+                  {/* ✅ Limit content to 4 lines + scrollbar */}
+                  <TableCell align="center">
+                    <Box
+                      sx={{
+                        maxHeight: "4.8em", // 4 lines
+                        overflowY: "auto",
+                        lineHeight: "1.2em",
+                      }}
+                    >
+                      {post.content}
+                    </Box>
+                  </TableCell>
                   <TableCell align="center">{post.category || "N/A"}</TableCell>
-                  
                   <TableCell align="center">{post.status || "N/A"}</TableCell>
                   <TableCell align="center">
                     {post.image && (
@@ -236,16 +232,10 @@ export default function Page() {
                     )}
                   </TableCell>
                   <TableCell align="center">
-                    <IconButton
-                      onClick={() => handleEditPost(post.id)}
-                      color="primary"
-                    >
+                    <IconButton onClick={() => handleEditPost(post.id)} color="primary">
                       <Edit />
                     </IconButton>
-                    <IconButton
-                      onClick={() => handleDelete(post.id)}
-                      color="error"
-                    >
+                    <IconButton onClick={() => handleDelete(post.id)} color="error">
                       <Delete />
                     </IconButton>
                   </TableCell>

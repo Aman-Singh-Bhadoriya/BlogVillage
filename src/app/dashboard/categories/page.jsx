@@ -5,48 +5,60 @@ import { db } from "../../utils/firebase";
 import CategoryCard from "./CategoryCard";
 import CategoryForm from "./CategoryForm";
 import { Button, Box } from "@mui/material";
+import { useAuth } from "../../context/AuthContext"; // ✅ Import Auth Context
 
-export default function CategoriesPage() {
+export default function Page() {
   const [categories, setCategories] = useState([]);
   const [formOpen, setFormOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
+  const { user } = useAuth(); // ✅ Get user info from context
 
   useEffect(() => {
     loadCategories();
   }, []);
 
+  // ✅ Load all categories (including those created by other admins)
   const loadCategories = async () => {
     const snapshot = await getDocs(collection(db, "categories"));
     setCategories(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
   };
 
+  // ✅ Refresh list after creating/editing a category
   const handleCategoryCreated = () => {
-    loadCategories(); // ✅ Refresh list
+    loadCategories(); // ✅ Reload categories
   };
 
+  // ✅ Open form for editing (Only for admins)
   const handleEdit = (category) => {
-    setEditingCategory(category);
-    setFormOpen(true);
+    if (user?.role === "admin") {
+      setEditingCategory(category);
+      setFormOpen(true);
+    }
   };
 
+  // ✅ Handle delete (Only for admins)
   const handleDelete = (id) => {
-    setCategories(categories.filter((cat) => cat.id !== id));
+    if (user?.role === "admin") {
+      setCategories(categories.filter((cat) => cat.id !== id));
+    }
   };
 
   return (
     <Box>
-      {/* ✅ Add Category Button */}
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          setEditingCategory(null); // Reset for new category
-          setFormOpen(true);
-        }}
-        sx={{ mb: 2 }}
-      >
-        Add Category
-      </Button>
+      {/* ✅ Only admins can see the "Add Category" button */}
+      {user?.role === "admin" && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            setEditingCategory(null);
+            setFormOpen(true);
+          }}
+          sx={{ mb: 2 }}
+        >
+          Add Category
+        </Button>
+      )}
 
       {/* ✅ Category Form */}
       <CategoryForm
@@ -62,8 +74,8 @@ export default function CategoriesPage() {
           <CategoryCard
             key={category.id}
             category={category}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
+            onEdit={user?.role === "admin" ? handleEdit : null} // ✅ Only admins can edit
+            onDelete={user?.role === "admin" ? handleDelete : null} // ✅ Only admins can delete
           />
         ))}
       </Box>
