@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { getBlogBySlug } from "../api/getBlogBySlug";
+import RelatedPosts from "../../Home/components/RelatedPosts";
 
 export default function BlogDetailsPage() {
-  const { slug } = useParams(); // Get the slug from the URL
+  const { slug } = useParams();
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -13,12 +14,9 @@ export default function BlogDetailsPage() {
     const fetchBlog = async () => {
       setLoading(true);
       try {
-        console.log(`Fetching blog for slug: ${slug}`);
         const data = await getBlogBySlug(slug);
         if (data) {
           setBlog(data);
-        } else {
-          console.error("Blog not found");
         }
       } catch (error) {
         console.error("Failed to load blog:", error);
@@ -39,7 +37,7 @@ export default function BlogDetailsPage() {
         <img
           src={blog.image}
           alt={blog.title}
-          className="w-full max-h-[500px] object-cover rounded-lg mb-6"
+          className="w-full h-64 object-cover rounded-lg mb-6"
         />
       )}
       <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
@@ -47,6 +45,9 @@ export default function BlogDetailsPage() {
         {new Date(blog.createdAt).toLocaleDateString()} • {blog.views || 0} views
       </div>
       <p className="text-lg text-gray-700 leading-relaxed">{blog.content}</p>
+
+      {/* ✅ Related Posts */}
+      <RelatedPosts categoryId={blog.categoryId} currentPostId={blog.id} />
     </div>
   );
 }
