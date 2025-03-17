@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import { useAuth } from "../../../context/AuthContext";
 import SlugInput from "./Component/SlugInput";
-import DOMPurify from "dompurify"; // ✅ Import DOMPurify
+import DOMPurify from "dompurify";
 
 export default function PostForm() {
   const [title, setTitle] = useState("");
@@ -33,6 +33,11 @@ export default function PostForm() {
   const [status, setStatus] = useState("");
   const [categories, setCategories] = useState([]);
   const [postId, setPostId] = useState(null);
+
+  // ✅ New SEO fields
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
+  const [metaTags, setMetaTags] = useState("");
 
   const { user } = useAuth();
   const searchParams = useSearchParams();
@@ -73,6 +78,11 @@ export default function PostForm() {
         setImageUrl(post.image || "");
         setCategoryId(post.categoryId || "");
         setStatus(post.status || "");
+
+        // ✅ Load SEO fields
+        setMetaTitle(post.metaTitle || "");
+        setMetaDescription(post.metaDescription || "");
+        setMetaTags(post.metaTags?.join(", ") || "");
       }
     } catch (error) {
       console.error("Error loading post:", error);
@@ -81,44 +91,50 @@ export default function PostForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!title || !slug || !content || !categoryId || !status) {
       alert("All fields are required");
       return;
     }
-  
+
     // ✅ Sanitize content before saving to database
     const sanitizedContent = DOMPurify.sanitize(content);
-  
+
     try {
       if (postId) {
         await updateDoc(doc(db, "posts", postId), {
           title,
           slug,
-          content: sanitizedContent, // ✅ Save sanitized HTML to Firebase
+          content: sanitizedContent,
           image: imageUrl,
           categoryId,
           status,
+          metaTitle,
+          metaDescription,
+          metaTags: metaTags.split(",").map((tag) => tag.trim()), // ✅ Save tags as an array
         });
       } else {
         if (!user) {
           alert("You must be logged in to create a post");
           return;
         }
-  
+
         await addDoc(collection(db, "posts"), {
           title,
           slug,
-          content: sanitizedContent, // ✅ Save sanitized HTML to Firebase
+          content: sanitizedContent,
           image: imageUrl,
           categoryId,
           status,
+          metaTitle,
+          metaDescription,
+          metaTags: metaTags.split(",").map((tag) => tag.trim()), // ✅ Save tags as an array
           authorId: user.uid,
           authorEmail: user.email,
           createdAt: new Date(),
         });
       }
-  
+
       alert("Post saved successfully!");
       router.push("/dashboard/posts");
     } catch (error) {
@@ -126,7 +142,6 @@ export default function PostForm() {
       alert("Failed to save post");
     }
   };
-  
 
   const handleCancel = () => {
     router.push("/dashboard/posts");
@@ -158,13 +173,13 @@ export default function PostForm() {
         required
       />
 
+      {/* ✅ Image URL */}
       <TextField
         label="Image URL"
         value={imageUrl}
         onChange={(e) => setImageUrl(e.target.value)}
         fullWidth
       />
-
 
       <Box display="flex" gap={2}>
         <FormControl fullWidth required>
@@ -189,6 +204,32 @@ export default function PostForm() {
           </Select>
         </FormControl>
       </Box>
+
+      {/* ✅ Meta Title */}
+      <TextField
+        label="Meta Title"
+        value={metaTitle}
+        onChange={(e) => setMetaTitle(e.target.value)}
+        fullWidth
+      />
+
+      {/* ✅ Meta Description */}
+      <TextField
+        label="Meta Description"
+        value={metaDescription}
+        onChange={(e) => setMetaDescription(e.target.value)}
+        fullWidth
+        multiline
+        rows={2}
+      />
+
+      {/* ✅ Meta Tags */}
+      <TextField
+        label="Meta Tags (comma-separated)"
+        value={metaTags}
+        onChange={(e) => setMetaTags(e.target.value)}
+        fullWidth
+      />
 
       {/* ✅ Submit & Cancel Buttons */}
       <Box display="flex" gap={2}>

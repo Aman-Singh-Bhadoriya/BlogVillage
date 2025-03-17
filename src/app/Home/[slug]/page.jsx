@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { getBlogBySlug } from "../api/getBlogBySlug";
 import RelatedPosts from "../../Home/components/RelatedPosts";
-import DOMPurify from "dompurify"; // ✅ Import DOMPurify
+import DOMPurify from "dompurify";
 
 export default function BlogDetailsPage() {
   const { slug } = useParams();
   const [blog, setBlog] = useState(null);
+  // const [relatedBlogs, setRelatedBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,6 +19,7 @@ export default function BlogDetailsPage() {
         const data = await getBlogBySlug(slug);
         if (data) {
           setBlog(data);
+          fetchRelatedBlogs(data.categoryId, data.id); // Fetch related blogs based on category and id
         }
       } catch (error) {
         console.error("Failed to load blog:", error);
@@ -29,11 +31,18 @@ export default function BlogDetailsPage() {
     if (slug) fetchBlog();
   }, [slug]);
 
+  useEffect(() => {
+    if (blog) {
+      document.title = `${blog.metaTitle} | My Blog`;
+    }
+  }, [blog]);
+
   if (loading) return <p className="text-center py-10">Loading...</p>;
   if (!blog) return <p className="text-center py-10">Blog not found.</p>;
 
   return (
     <div className="max-w-4xl mx-auto py-10 px-4">
+      {/* ✅ Main Blog Content */}
       {blog.image && (
         <img
           src={blog.image}
@@ -46,20 +55,21 @@ export default function BlogDetailsPage() {
       )}
       <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
       <div className="text-gray-500 text-sm mb-4">
-        {new Date(blog.createdAt).toLocaleDateString()} • {blog.views || 0}{" "}
-        views
+        {new Date(blog.createdAt).toLocaleDateString()} • {blog.views || 0} views
       </div>
 
       {/* ✅ Render HTML content safely */}
       <div
         className="text-lg text-gray-700 leading-relaxed"
         dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(blog.content), // ✅ Sanitize before rendering
+          __html: DOMPurify.sanitize(blog.content),
         }}
       />
 
-      {/* ✅ Related Posts */}
+      {/* ✅ Existing Related Posts Component */}
       <RelatedPosts categoryId={blog.categoryId} currentPostId={blog.id} />
+
+      
     </div>
   );
 }
