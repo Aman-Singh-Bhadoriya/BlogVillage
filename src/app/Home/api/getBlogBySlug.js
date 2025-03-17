@@ -1,20 +1,27 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 export const getBlogBySlug = async (slug) => {
   if (!slug) throw new Error("Slug is required");
 
   try {
-    // console.log(`Fetching blog with slug: ${slug}`);
     const q = query(collection(db, "posts"), where("slug", "==", slug));
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-      const blog = querySnapshot.docs[0].data();
-      // console.log("Blog data fetched:", blog);
-      return { id: querySnapshot.docs[0].id, ...blog };
+      let blog = querySnapshot.docs[0].data();
+      const id = querySnapshot.docs[0].id;
+
+      // If there's an image path, get the download URL
+      if (blog.imagePath) {
+        const storage = getStorage();
+        const imageRef = ref(storage, blog.imagePath);
+        blog.imageUrl = await getDownloadURL(imageRef); // Fetch high-res image
+      }
+
+      return { id, ...blog };
     } else {
-      // console.warn("No blog found with slug:", slug);
       return null;
     }
   } catch (error) {

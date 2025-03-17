@@ -1,7 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { db } from "../../../utils/firebase";
+import JoditEditor from "jodit-react";
 import {
   collection,
   getDocs,
@@ -20,7 +21,8 @@ import {
   Box,
 } from "@mui/material";
 import { useAuth } from "../../../context/AuthContext";
-import SlugInput from "./Component/SlugInput"; // ✅ Import SlugInput
+import SlugInput from "./Component/SlugInput";
+import DOMPurify from "dompurify"; // ✅ Import DOMPurify
 
 export default function PostForm() {
   const [title, setTitle] = useState("");
@@ -35,6 +37,7 @@ export default function PostForm() {
   const { user } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const editor = useRef(null);
 
   useEffect(() => {
     const id = searchParams.get("id");
@@ -78,18 +81,21 @@ export default function PostForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!title || !slug || !content || !categoryId || !status) {
       alert("All fields are required");
       return;
     }
-
+  
+    // ✅ Sanitize content before saving to database
+    const sanitizedContent = DOMPurify.sanitize(content);
+  
     try {
       if (postId) {
         await updateDoc(doc(db, "posts", postId), {
           title,
           slug,
-          content,
+          content: sanitizedContent, // ✅ Save sanitized HTML to Firebase
           image: imageUrl,
           categoryId,
           status,
@@ -99,11 +105,11 @@ export default function PostForm() {
           alert("You must be logged in to create a post");
           return;
         }
-
+  
         await addDoc(collection(db, "posts"), {
           title,
           slug,
-          content,
+          content: sanitizedContent, // ✅ Save sanitized HTML to Firebase
           image: imageUrl,
           categoryId,
           status,
@@ -112,7 +118,7 @@ export default function PostForm() {
           createdAt: new Date(),
         });
       }
-
+  
       alert("Post saved successfully!");
       router.push("/dashboard/posts");
     } catch (error) {
@@ -120,8 +126,8 @@ export default function PostForm() {
       alert("Failed to save post");
     }
   };
+  
 
-  // ✅ Handle Cancel Button
   const handleCancel = () => {
     router.push("/dashboard/posts");
   };
@@ -141,17 +147,17 @@ export default function PostForm() {
       <SlugInput title={title} slug={slug} setSlug={setSlug} />
 
       {/* ✅ Content */}
-      <TextField
+      <JoditEditor
+        ref={editor}
         label="Content"
         value={content}
-        onChange={(e) => setContent(e.target.value)}
+        onChange={(newContent) => setContent(newContent)}
         multiline
         rows={6}
         fullWidth
         required
       />
 
-      {/* ✅ Image */}
       <TextField
         label="Image URL"
         value={imageUrl}
@@ -159,7 +165,7 @@ export default function PostForm() {
         fullWidth
       />
 
-      {/* ✅ Category and Status */}
+
       <Box display="flex" gap={2}>
         <FormControl fullWidth required>
           <InputLabel>Category</InputLabel>
@@ -177,10 +183,7 @@ export default function PostForm() {
 
         <FormControl fullWidth required>
           <InputLabel>Status</InputLabel>
-          <Select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
+          <Select value={status} onChange={(e) => setStatus(e.target.value)}>
             <MenuItem value="active">Active</MenuItem>
             <MenuItem value="inactive">Inactive</MenuItem>
           </Select>
@@ -192,11 +195,7 @@ export default function PostForm() {
         <Button type="submit" variant="contained" color="primary">
           {postId ? "Update Post" : "Create Post"}
         </Button>
-        <Button
-          onClick={handleCancel}
-          variant="outlined"
-          color="secondary"
-        >
+        <Button onClick={handleCancel} variant="outlined" color="secondary">
           Cancel
         </Button>
       </Box>

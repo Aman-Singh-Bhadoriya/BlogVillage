@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import {
   collection,
@@ -8,6 +9,7 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+import DOMPurify from "dompurify"; // ✅ Import DOMPurify
 import { db } from "../../utils/firebase";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -160,6 +162,7 @@ export default function Page() {
           borderRadius: "12px",
           boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           overflow: "hidden",
+          
         }}
       >
         <Table>
@@ -167,6 +170,7 @@ export default function Page() {
             <TableRow
               sx={{
                 background: "linear-gradient(90deg, #4f46e5, #6366f1)",
+                // border:"1px solid #000"
               }}
             >
               {[
@@ -183,8 +187,9 @@ export default function Page() {
                   sx={{
                     fontWeight: "bold",
                     color: "#ffffff",
-                    padding: "12px",
+                    padding: "8px",
                     textAlign: "center",
+                    border: "1px solid gray",
                   }}
                 >
                   {heading}
@@ -212,17 +217,17 @@ export default function Page() {
                 <TableRow key={post.id} sx={{ borderBottom: "1px solid #e5e7eb" }}>
                   <TableCell align="center">{index + 1}</TableCell>
                   <TableCell align="center">{post.title}</TableCell>
-                  {/* ✅ Limit content to 4 lines + scrollbar */}
-                  <TableCell align="center">
+                  <TableCell align="center max-w-[300px]">
                     <Box
                       sx={{
                         maxHeight: "4.8em", // 4 lines
                         overflowY: "auto",
-                        lineHeight: "1.2em",
+                        lineHeight: "1.1em",
                       }}
-                    >
-                      {post.content}
-                    </Box>
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(post.content), // ✅ Sanitized content
+                      }}
+                    />
                   </TableCell>
                   <TableCell align="center">{post.category || "N/A"}</TableCell>
                   <TableCell align="center">{post.status || "N/A"}</TableCell>

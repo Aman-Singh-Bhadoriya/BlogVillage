@@ -1,2 +1,14 @@
 @import "tailwindcss";
-/* @import '@fontsource/geist-mono'; */
+
+.ql-container {
+    @apply text-base border border-gray-300 rounded-b-lg;
+  }
+  
+  .ql-toolbar {
+    @apply bg-gray-100 border border-gray-300 rounded-t-lg;
+  }
+  
+  .ql-editor {
+    @apply min-h-[200px] text-gray-800;
+  }
+  
