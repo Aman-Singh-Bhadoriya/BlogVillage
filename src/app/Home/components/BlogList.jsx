@@ -3,21 +3,25 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase";
-import { useRouter } from "next/navigation";
-import { Box, Card, CardMedia, CardContent, Typography, Button, IconButton, Tooltip, Grid } from "@mui/material";
-import ShareIcon from "@mui/icons-material/Share";
+import { Box, Card, CardMedia, CardContent, Typography, Grid, Avatar, Button } from "@mui/material";
 import DOMPurify from "dompurify";
 
 export default function BlogList() {
   const [blogs, setBlogs] = useState([]);
   const [visibleCount, setVisibleCount] = useState(10);
-  const router = useRouter();
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const snapshot = await getDocs(collection(db, "posts"));
-      const blogData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setBlogs(blogData);
+      try {
+        const snapshot = await getDocs(collection(db, "posts"));
+        const blogData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setBlogs(blogData);
+      } catch (error) {
+        console.error("Failed to fetch blogs:", error);
+      }
     };
     fetchBlogs();
   }, []);
@@ -26,26 +30,10 @@ export default function BlogList() {
     setVisibleCount((prev) => prev + 10);
   };
 
-  const handleReadMore = (slug) => {
-    router.push(`/Home/${slug}`);
-  };
-
-  const handleShare = (blog) => {
-    if (navigator.share) {
-      navigator.share({
-        title: blog.title,
-        text: blog.metaDescription || "Check out this blog!",
-        url: window.location.href + `/Home/${blog.slug}`,
-      }).catch(console.error);
-    } else {
-      alert("Sharing not supported in this browser.");
-    }
-  };
-
   return (
-    <Grid container spacing={3} sx={{ py: 4 }}>
+    <Grid container spacing={4} sx={{ py: 6, px:6, }}>
       {blogs.slice(0, visibleCount).map((blog) => (
-        <Grid item key={blog.id} xs={12} sm={6} md={4} lg={3}>
+        <Grid item key={blog.id} xs={12} sm={6} md={4}>
           <Card
             sx={{
               width: "100%",
@@ -53,11 +41,13 @@ export default function BlogList() {
               display: "flex",
               flexDirection: "column",
               boxShadow: 4,
-              borderRadius: 3,
+              borderRadius: 4,
               overflow: "hidden",
+              backgroundColor: "var(--secondary-color)",
               transition: "transform 0.2s ease-in-out",
               "&:hover": {
                 transform: "translateY(-5px)",
+                boxShadow: 6,
               },
             }}
           >
@@ -68,17 +58,19 @@ export default function BlogList() {
                 image={blog.image}
                 alt={blog.title}
                 sx={{
-                  height: 180,
+                  height: 200,
                   objectFit: "cover",
                 }}
               />
             )}
 
-            <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", p: 2 }}>
+            {/* ✅ Blog Content */}
+            <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", p: 3 }}>
               {/* ✅ Blog Title */}
               <Typography
                 variant="h6"
                 fontWeight="bold"
+                color="var(--primary-color)"
                 sx={{
                   overflow: "hidden",
                   whiteSpace: "nowrap",
@@ -89,7 +81,7 @@ export default function BlogList() {
                 {blog.title}
               </Typography>
 
-              {/* ✅ Blog Content */}
+              {/* ✅ Blog Description */}
               <Typography
                 variant="body2"
                 color="text.secondary"
@@ -102,32 +94,23 @@ export default function BlogList() {
                   WebkitLineClamp: 3,
                   overflow: "hidden",
                   mb: 2,
-                  lineHeight: "1.4",
+                  lineHeight: 1.5,
                 }}
               />
 
-              {/* ✅ Buttons */}
+              {/* ✅ Author and Date */}
               <Box mt="auto" display="flex" justifyContent="space-between" alignItems="center">
-                {/* ✅ Share Button */}
-                <Tooltip title="Share this post">
-                  <IconButton onClick={() => handleShare(blog)} color="primary" size="small">
-                    <ShareIcon />
-                  </IconButton>
-                </Tooltip>
-
-                {/* ✅ Read More Button */}
-                <Button
-                  onClick={() => handleReadMore(blog.slug)}
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  sx={{
-                    textTransform: "none",
-                    fontSize: "0.875rem",
-                  }}
-                >
-                  Read More
-                </Button>
+                <Box display="flex" alignItems="center" gap={1}>
+                  {blog.authorImage && (
+                    <Avatar src={blog.authorImage} alt={blog.author} sx={{ width: 32, height: 32 }} />
+                  )}
+                  <Typography variant="body2" color="text.secondary">
+                    {blog.author || "Unknown Author"}
+                  </Typography>
+                </Box>
+                <Typography variant="body2" color="text.secondary">
+                  {blog.date || "Unknown Date"}
+                </Typography>
               </Box>
             </CardContent>
           </Card>
@@ -136,8 +119,22 @@ export default function BlogList() {
 
       {/* ✅ Show More Button */}
       {visibleCount < blogs.length && (
-        <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-          <Button onClick={handleShowMore} variant="contained" color="primary" size="large">
+        <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <Button
+            onClick={handleShowMore}
+            variant="contained"
+            sx={{
+              backgroundColor: "var(--primary-color)",
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "var(--accent-color)",
+              },
+              padding: "10px 24px",
+              borderRadius: "8px",
+              fontWeight: "500",
+              textTransform: "none",
+            }}
+          >
             Show More
           </Button>
         </Grid>
