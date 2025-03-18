@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 import { useRouter } from "next/navigation";
+import { Box, Card, CardMedia, CardContent, Typography, Button, IconButton, Tooltip, Grid } from "@mui/material";
+import ShareIcon from "@mui/icons-material/Share";
 import DOMPurify from "dompurify";
 
 export default function BlogList() {
@@ -25,47 +27,121 @@ export default function BlogList() {
   };
 
   const handleReadMore = (slug) => {
-    // console.log(slug);
     router.push(`/Home/${slug}`);
   };
 
+  const handleShare = (blog) => {
+    if (navigator.share) {
+      navigator.share({
+        title: blog.title,
+        text: blog.metaDescription || "Check out this blog!",
+        url: window.location.href + `/Home/${blog.slug}`,
+      }).catch(console.error);
+    } else {
+      alert("Sharing not supported in this browser.");
+    }
+  };
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 py-8">
+    <Grid container spacing={3} sx={{ py: 4 }}>
       {blogs.slice(0, visibleCount).map((blog) => (
-        <div key={blog.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-          {blog.image && (
-            <img src={blog.image} alt={blog.title} className="w-full h-48 object-cover" />
-          )}
-          <div className="p-4">
-            <h2 className="text-xl font-bold mb-2">{blog.title}</h2>
-            <div
-              className="text-gray-600 line-clamp-2"
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(blog.content), // ✅ Clean HTML content
-              }}
-            />
-            <div className="flex justify-between items-center mt-4">
-              <span className="text-gray-400 text-sm">{blog.views || 0} views</span>
-              <button
-                onClick={() => handleReadMore(blog.slug)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-              >
-                Read More
-              </button>
-            </div>
-          </div>
-        </div>
-      ))}
-      {visibleCount < blogs.length && (
-        <div className="col-span-full flex justify-center mt-6">
-          <button
-            onClick={handleShowMore}
-            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
+        <Grid item key={blog.id} xs={12} sm={6} md={4} lg={3}>
+          <Card
+            sx={{
+              width: "100%",
+              height: 420,
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: 4,
+              borderRadius: 3,
+              overflow: "hidden",
+              transition: "transform 0.2s ease-in-out",
+              "&:hover": {
+                transform: "translateY(-5px)",
+              },
+            }}
           >
+            {/* ✅ Blog Image */}
+            {blog.image && (
+              <CardMedia
+                component="img"
+                image={blog.image}
+                alt={blog.title}
+                sx={{
+                  height: 180,
+                  objectFit: "cover",
+                }}
+              />
+            )}
+
+            <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", p: 2 }}>
+              {/* ✅ Blog Title */}
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  mb: 1,
+                }}
+              >
+                {blog.title}
+              </Typography>
+
+              {/* ✅ Blog Content */}
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(blog.content.slice(0, 120)) + "...",
+                }}
+                sx={{
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3,
+                  overflow: "hidden",
+                  mb: 2,
+                  lineHeight: "1.4",
+                }}
+              />
+
+              {/* ✅ Buttons */}
+              <Box mt="auto" display="flex" justifyContent="space-between" alignItems="center">
+                {/* ✅ Share Button */}
+                <Tooltip title="Share this post">
+                  <IconButton onClick={() => handleShare(blog)} color="primary" size="small">
+                    <ShareIcon />
+                  </IconButton>
+                </Tooltip>
+
+                {/* ✅ Read More Button */}
+                <Button
+                  onClick={() => handleReadMore(blog.slug)}
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  sx={{
+                    textTransform: "none",
+                    fontSize: "0.875rem",
+                  }}
+                >
+                  Read More
+                </Button>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+
+      {/* ✅ Show More Button */}
+      {visibleCount < blogs.length && (
+        <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+          <Button onClick={handleShowMore} variant="contained" color="primary" size="large">
             Show More
-          </button>
-        </div>
+          </Button>
+        </Grid>
       )}
-    </div>
+    </Grid>
   );
 }
