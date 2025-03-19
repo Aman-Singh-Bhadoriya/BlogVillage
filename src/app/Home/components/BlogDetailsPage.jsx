@@ -21,7 +21,15 @@ export default function BlogDetailsPage({ blog }) {
   };
 
   return (
-    <Box maxWidth="lg" mx="auto" py={5} px={15}>
+    <Box 
+      maxWidth="lg" 
+      mx="auto" 
+      py={5} 
+      px={3} 
+      sx={{
+        fontFamily: "'Merriweather', serif", // ✅ Ensure body font applied globally
+      }}
+    >
       <Card sx={{ boxShadow: 3, borderRadius: 3, overflow: "hidden" }}>
         {/* ✅ Blog Image with Fixed Height */}
         {blog.image && (
@@ -30,19 +38,32 @@ export default function BlogDetailsPage({ blog }) {
             image={blog.image}
             alt={blog.title}
             sx={{
-              height: { xs: 200, sm: 300 }, // Responsive height
-              objectFit: "cover", // Maintain aspect ratio and cover space
+              height: { xs: 200, sm: 300 },
+              objectFit: "cover",
             }}
           />
         )}
 
         <CardContent>
           {/* ✅ Blog Title & Meta Info */}
-          <Typography variant="h4" fontWeight="bold" gutterBottom>
+          <Typography 
+            variant="h4" 
+            fontWeight="bold" 
+            gutterBottom
+            sx={{ 
+              fontFamily: "'Inter', sans-serif" // ✅ Heading font
+            }}
+          >
             {blog.title}
           </Typography>
           <Grid container justifyContent="space-between" alignItems="center" mb={2}>
-            <Typography variant="body2" color="text.secondary">
+            <Typography 
+              variant="body2" 
+              color="text.secondary"
+              sx={{
+                fontFamily: "'Merriweather', serif"
+              }}
+            >
               {"Date of Publish: "}
               {blog.createdAt
                 ? new Date(blog.createdAt).toLocaleDateString()
@@ -64,7 +85,10 @@ export default function BlogDetailsPage({ blog }) {
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(blog.content),
             }}
-            sx={{ lineHeight: 1.8 }}
+            sx={{ 
+              lineHeight: 1.8, 
+              fontFamily: "'Merriweather', serif" // ✅ Body font
+            }}
           />
         </CardContent>
       </Card>

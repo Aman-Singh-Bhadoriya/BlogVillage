@@ -1,14 +1,11 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.ql-container {
-    @apply text-base border border-gray-300 rounded-b-lg;
-  }
-  
-  .ql-toolbar {
-    @apply bg-gray-100 border border-gray-300 rounded-t-lg;
-  }
-  
-  .ql-editor {
-    @apply min-h-[200px] text-gray-800;
-  }
-  
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  font-family: 'Merriweather', serif;
+}

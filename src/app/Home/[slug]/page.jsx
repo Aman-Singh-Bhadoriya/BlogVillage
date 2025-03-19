@@ -35,19 +35,21 @@ export default function Page() {
     if (slug) fetchBlog();
   }, [slug]);
 
-  // ✅ Set metadata when blog is loaded
+
   useEffect(() => {
     if (blog) {
       setPageMetadata(blog);
     }
   }, [blog]);
 
-  // ✅ Loading State
+
   if (loading) return <p className="text-center py-10">Loading...</p>;
 
-  // ✅ Not Found State
+
   if (!blog) return <p className="text-center py-10">Blog not found.</p>;
 
-  // ✅ Render BlogDetailsPage
-  return <BlogDetailsPage blog={blog} />;
+
+  return <div className="bg-gray-50 dark:bg-neutral-800">
+    <BlogDetailsPage blog={blog} />;
+    </div>
 }
