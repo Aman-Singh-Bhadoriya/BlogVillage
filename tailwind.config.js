@@ -6,10 +6,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        serif: ['Merriweather', 'serif', 'Inter', 'system-ui', 'sans-serif'],
-      },
       colors: {
         primary: {
           DEFAULT: '#3B82F6',

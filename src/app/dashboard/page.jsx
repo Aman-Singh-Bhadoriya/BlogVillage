@@ -23,7 +23,7 @@ export default function Dashboard() {
 
   return (
     <div className="">
-      <div className="flex w-[230px] bg-[] rounded-4xl items-center gap-1 border border-gray-400 py-1 px-2  overflow-hidden">
+      <div className="flex w-[230px] rounded-4xl items-center gap-1 border border-gray-400 py-1 px-2  overflow-hidden">
         <img
           className="object-cover h-8 w-8 rounded-full pr-2"
           src={user?.photoURL}

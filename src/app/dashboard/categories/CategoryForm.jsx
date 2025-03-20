@@ -8,6 +8,7 @@ export default function CategoryForm({ open, onClose, onCategoryCreated, categor
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [status, setStatus] = useState("active");
+  const [description, setDescription] = useState(""); // ✅ New state for description
 
   // ✅ Pre-fill the form if editing
   useEffect(() => {
@@ -15,10 +16,12 @@ export default function CategoryForm({ open, onClose, onCategoryCreated, categor
       setName(category.name);
       setImage(category.image);
       setStatus(category.status || "active");
+      setDescription(category.description || ""); // ✅ Pre-fill description
     } else {
       setName("");
       setImage("");
       setStatus("active");
+      setDescription("");
     }
   }, [category]);
 
@@ -26,7 +29,7 @@ export default function CategoryForm({ open, onClose, onCategoryCreated, categor
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !image || !status) {
+    if (!name || !image || !status || !description) {
       alert("All fields are required!");
       return;
     }
@@ -39,6 +42,7 @@ export default function CategoryForm({ open, onClose, onCategoryCreated, categor
           name,
           image,
           status,
+          description, // ✅ Include description in update
         });
         alert("Category updated successfully!");
       } else {
@@ -47,6 +51,7 @@ export default function CategoryForm({ open, onClose, onCategoryCreated, categor
           name,
           image,
           status,
+          description, // ✅ Include description in creation
         });
         alert("Category added successfully!");
       }
@@ -123,6 +128,18 @@ export default function CategoryForm({ open, onClose, onCategoryCreated, categor
               <MenuItem value="inactive">Inactive</MenuItem>
             </Select>
           </FormControl>
+
+          {/* ✅ Description */}
+          <TextField
+            label="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            fullWidth
+            required
+            multiline
+            rows={3}
+            sx={{ mt: 2 }}
+          />
 
           {/* ✅ Submit Button */}
           <Button 

@@ -29,12 +29,12 @@ export default function PostForm() {
   const [slug, setSlug] = useState("");
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState({ id: "", name: "" });
   const [status, setStatus] = useState("");
   const [categories, setCategories] = useState([]);
   const [postId, setPostId] = useState(null);
 
-  // ✅ New SEO fields
+  // ✅ Meta fields
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [metaTags, setMetaTags] = useState("");
@@ -44,6 +44,7 @@ export default function PostForm() {
   const router = useRouter();
   const editor = useRef(null);
 
+  // ✅ Load post data and categories
   useEffect(() => {
     const id = searchParams.get("id");
     if (id) {
@@ -67,19 +68,24 @@ export default function PostForm() {
     fetchCategories();
   }, []);
 
+  // ✅ Load existing post data
   const loadPost = async (id) => {
     try {
       const postDoc = await getDoc(doc(db, "posts", id));
       if (postDoc.exists()) {
         const post = postDoc.data();
+
         setTitle(post.title);
         setSlug(post.slug || "");
-        setContent(post.content);
+        setContent(post.content || "");
         setImageUrl(post.image || "");
-        setCategoryId(post.categoryId || "");
+        setCategoryId({
+          id: post.categoryId || "",
+          name: post.categoryName || "",
+        });
         setStatus(post.status || "");
 
-        // ✅ Load SEO fields
+        // ✅ Load meta fields correctly
         setMetaTitle(post.metaTitle || "");
         setMetaDescription(post.metaDescription || "");
         setMetaTags(post.metaTags?.join(", ") || "");
@@ -89,31 +95,35 @@ export default function PostForm() {
     }
   };
 
+  // ✅ Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !slug || !content || !categoryId || !status) {
+    if (!title || !slug || !content || !categoryId.id || !status) {
       alert("All fields are required");
       return;
     }
 
-    // ✅ Sanitize content before saving to database
+    // ✅ Sanitize content before saving
     const sanitizedContent = DOMPurify.sanitize(content);
 
     try {
       if (postId) {
+        // ✅ Update existing post
         await updateDoc(doc(db, "posts", postId), {
           title,
           slug,
           content: sanitizedContent,
           image: imageUrl,
-          categoryId,
+          categoryId: categoryId.id,
+          categoryName: categoryId.name,
           status,
           metaTitle,
           metaDescription,
-          metaTags: metaTags.split(",").map((tag) => tag.trim()), // ✅ Save tags as an array
+          metaTags: metaTags.split(",").map((tag) => tag.trim()),
         });
       } else {
+        // ✅ Create new post
         if (!user) {
           alert("You must be logged in to create a post");
           return;
@@ -124,11 +134,12 @@ export default function PostForm() {
           slug,
           content: sanitizedContent,
           image: imageUrl,
-          categoryId,
+          categoryId: categoryId.id,
+          categoryName: categoryId.name,
           status,
           metaTitle,
           metaDescription,
-          metaTags: metaTags.split(",").map((tag) => tag.trim()), // ✅ Save tags as an array
+          metaTags: metaTags.split(",").map((tag) => tag.trim()),
           authorId: user.uid,
           authorEmail: user.email,
           createdAt: new Date(),
@@ -143,6 +154,7 @@ export default function PostForm() {
     }
   };
 
+  // ✅ Handle cancel
   const handleCancel = () => {
     router.push("/dashboard/posts");
   };
@@ -164,13 +176,8 @@ export default function PostForm() {
       {/* ✅ Content */}
       <JoditEditor
         ref={editor}
-        label="Content"
         value={content}
         onChange={(newContent) => setContent(newContent)}
-        multiline
-        rows={6}
-        fullWidth
-        required
       />
 
       {/* ✅ Image URL */}
@@ -181,12 +188,21 @@ export default function PostForm() {
         fullWidth
       />
 
+      {/* ✅ Category & Status */}
       <Box display="flex" gap={2}>
         <FormControl fullWidth required>
           <InputLabel>Category</InputLabel>
           <Select
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
+            value={categoryId.id || ""}
+            onChange={(e) => {
+              const selectedCategory = categories.find(
+                (category) => category.id === e.target.value
+              );
+              setCategoryId({
+                id: selectedCategory.id,
+                name: selectedCategory.name,
+              });
+            }}
           >
             {categories.map((category) => (
               <MenuItem key={category.id} value={category.id}>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { query, collection, getDocs, where } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 import DOMPurify from "dompurify";
 
@@ -12,33 +12,66 @@ export default function BlogList() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const snapshot = await getDocs(collection(db, "posts"));
-        const blogData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        // ✅ Filter only posts with status "active"
+        const q = query(
+          collection(db, "posts"),
+          where("status", "==", "active")
+        );
+        const querySnapshot = await getDocs(q);
+
+        const blogData = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            title: data.title || "",
+            content: data.content || "",
+            image: data.image || "",
+            slug: data.slug || "",
+            categoryName: data.categoryName || "Uncategorized",
+            readTime: data.readTime || "5 min read",
+            author: data.author || "Unknown Author",
+            authorImage: data.authorImage || null,
+            createdAt: data.createdAt
+              ? formatDate(data.createdAt.seconds * 1000)
+              : "Unknown Date", // ✅ Format createdAt date
+            date: data.date
+              ? new Date(data.date.seconds * 1000).toLocaleDateString()
+              : "Unknown Date",
+          };
+        });
         setBlogs(blogData);
       } catch (error) {
         console.error("Failed to fetch blogs:", error);
       }
     };
+
     fetchBlogs();
   }, []);
+
+  // ✅ Date formatting helper function
+  const formatDate = (timestamp) => {
+    if (!timestamp) return "Unknown Date";
+    return new Date(timestamp).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   const handleShowMore = () => {
     setVisibleCount((prev) => prev + 10);
   };
 
   return (
-    <div className="py-6 px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div className="py-6 px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       {blogs.slice(0, visibleCount).map((blog) => (
         <div
           key={blog.id}
-          className="bg-white dark:bg-neutral-800 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+          className="bg-white dark:bg-neutral-800 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative"
         >
           {/* ✅ Blog Image */}
           {blog.image ? (
-            <div className="relative h-48">
+            <div className="relative h-[180px]">
               <img
                 src={blog.image}
                 alt={blog.title}
@@ -67,12 +100,18 @@ export default function BlogList() {
           {/* ✅ Blog Content */}
           <div className="p-6">
             {/* ✅ Category and Read Time */}
-            <div className="flex items-center space-x-2 mb-3">
-              <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                {blog.category || "Uncategorized"}
+            <div className="flex items-center justify-between space-x-2 mb-3">
+              <span
+                className={`${
+                  blog.categoryName === "Uncategorized"
+                    ? "bg-red-400" // 🚨 Red for Uncategorized
+                    : "bg-blue-100 dark:bg-green-900 text-white dark:text-blue-300"
+                } text-s font-medium px-2.5 py-0.5 rounded-full`}
+              >
+                {blog.categoryName}
               </span>
               <span className="text-gray-500 dark:text-gray-400 text-sm">
-                {blog.readTime || "5 min read"}
+                {blog.createdAt}
               </span>
             </div>
 
@@ -83,7 +122,7 @@ export default function BlogList() {
 
             {/* ✅ Blog Description */}
             <p
-              className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-5 "
+              className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-5"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(blog.content.slice(0, 120)) + "...",
               }}
@@ -115,11 +154,11 @@ export default function BlogList() {
                   </div>
                 )}
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {blog.author || "Unknown Author"}
+                  {blog.author}
                 </span>
               </div>
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                {blog.date || "Unknown Date"}
+                {blog.date}
               </span>
             </div>
           </div>

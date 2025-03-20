@@ -50,6 +50,6 @@ export default function Page() {
 
 
   return <div className="bg-gray-50 dark:bg-neutral-800">
-    <BlogDetailsPage blog={blog} />;
+    <BlogDetailsPage blog={blog} />
     </div>
 }

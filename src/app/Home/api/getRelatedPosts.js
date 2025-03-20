@@ -1,21 +1,45 @@
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, limit } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 
-export const getRelatedPosts = async (categoryId, currentPostId) => {
+export const getRelatedPosts = async (categoryName, currentPostId) => {
   try {
-    const q = query(
-      collection(db, "posts"),
-      where("categoryId", "==", categoryId) // Match category
-    );
-    const snapshot = await getDocs(q);
+    let relatedPosts = [];
 
-    const relatedPosts = snapshot.docs
-      .map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-      .filter((post) => post.id !== currentPostId) // Exclude the current post
-      .slice(0, 4); // Limit to 4 posts
+    if (categoryName) {
+      const q = query(
+        collection(db, "posts"),
+        where("categoryName", "==", categoryName),
+        where("status", "==", "active"),
+        limit(3)
+      );
+
+      const snapshot = await getDocs(q);
+
+      relatedPosts = snapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .filter((post) => post.id !== currentPostId);
+    }
+
+    // ✅ If no related posts found, fetch any active posts
+    if (relatedPosts.length === 0) {
+      const fallbackQuery = query(
+        collection(db, "posts"),
+        where("status", "==", "active"),
+        limit(3)
+      );
+
+      const fallbackSnapshot = await getDocs(fallbackQuery);
+
+      relatedPosts = fallbackSnapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .filter((post) => post.id !== currentPostId);
+    }
 
     return relatedPosts;
   } catch (error) {

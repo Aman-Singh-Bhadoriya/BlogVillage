@@ -2,10 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+
+body ,div {
+  font-family: serif ,'Merriweather';
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Inter', sans-serif;
 }
 
-body {
-  font-family: 'Merriweather', serif;
-}
