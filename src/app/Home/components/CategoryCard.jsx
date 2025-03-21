@@ -1,9 +1,11 @@
-export default function CategoryCard({ title, description, icon, link }) {
+export default function CategoryCard({ title, description, icon, link, className }) {
   return (
-    <div className="group bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-      <div className="p-8">
+    <div
+      className={`group rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${className}`}
+    >
+      <div className="py-6 px-5" >
         {/* ✅ Icon */}
-        <div className="w-14 h-14 bg-blue-500 dark:bg-blue-600 rounded-lg flex items-center justify-center mb-6">
+        <div className="w-14 h-14  flex items-center justify-center mb-6">
           {icon}
         </div>
 

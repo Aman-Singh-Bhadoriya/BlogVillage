@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useCategories } from "../api/useCategories";
 import CategoryCard from "./CategoryCard";
+import Link from "next/link";
 
 export default function Topics() {
   const { categories, loading } = useCategories();
@@ -27,35 +28,39 @@ export default function Topics() {
         </p>
       </div>
 
-      <div className="py-6 px-[80px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {categories.slice(0, Math.min(visibleCount, 6)).map((category) => (
-          <CategoryCard
-            key={category.id}
-            title={category.name}
-            description={category.description || "No description available"}
-            icon={
-              <img
-                src={category.image}
-                alt={category.name}
-                className="w-full h-full object-cover"
-              />
-            }
-            link={`/${category.id}`}
-          />
-        ))}
+      <div className="py-6 lg:px-[80px] px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {categories
+          .slice(0, Math.min(visibleCount, 6))
+          .map((category, index) => (
+            <CategoryCard
+              key={category.id}
+              title={category.name}
+              description={category.description || "No description available"}
+              className={`p-6 rounded-lg shadow-md transition-all duration-300 ${
+                index % 2 === 0
+                  ? "bg-blue-100 dark:bg-blue-900/30" // Even cards - Blue theme
+                  : "bg-green-100 dark:bg-green-900/30" // Odd cards - Green theme
+              }`}
+              icon={
+                <img
+                  src={category.image}
+                  alt={category.name}
+                  className="w-full h-full object-cover rounded-xl"
+                />
+              }
+              link={`/${category.id}`}
+            />
+          ))}
       </div>
 
-      {/* ✅ Show More Button */}
-      {visibleCount < categories.length && (
-        <div className="col-span-full flex justify-center mt-6">
-          <button
-            onClick={handleShowMore}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300"
-          >
-            Show More
-          </button>
-        </div>
-      )}
+      <div className="flex justify-center">
+        <Link
+          href="/blogs"
+          className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
+        >
+          View All Topics
+        </Link>
+      </div>
     </>
   );
 }
