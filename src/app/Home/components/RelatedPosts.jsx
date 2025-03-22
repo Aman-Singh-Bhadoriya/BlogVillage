@@ -25,7 +25,7 @@ export default function RelatedPosts({ categoryId, currentPostId }) {
   return (
     <div className="mt-12">
       {/* ✅ Section Heading */}
-      <h2 className="text-2xl font-bold mb-4">Related Posts</h2>
+      <h2 className="text-2xl font-bold mb-4 ">Related Posts</h2>
       
       {/* ✅ Grid Container */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

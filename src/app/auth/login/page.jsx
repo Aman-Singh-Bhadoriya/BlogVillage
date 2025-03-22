@@ -18,20 +18,20 @@ export default function Login() {
 
     try {
       await signIn(formData.email, formData.password);
-      router.push("/dashboard"); // Redirect to dashboard after login
+      router.push("/Home"); // Redirect to dashboard after login
     } catch (err) {
       setError("Invalid email or password. Please try again.");
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await googleSignIn();
-      router.push("/dashboard"); // Redirect after Google login
-    } catch (err) {
-      setError("Google Sign-In failed. Try again.");
-    }
-  };
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     await googleSignIn();
+  //     router.push("/Home"); 
+  //   } catch (err) {
+  //     setError("Google Sign-In failed. Try again.");
+  //   }
+  // };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -71,13 +71,13 @@ export default function Login() {
           <hr className="flex-grow border-gray-300" />
         </div>
 
-        <button
+        {/* <button 
           onClick={handleGoogleSignIn}
           className="flex items-center justify-center bg-white border p-2 rounded shadow hover:bg-gray-100 w-full"
         >
           <img src="/google-logo.png" alt="Google Logo" className="h-5 w-5 mr-2" />
           Sign in with Google
-        </button>
+        </button> */}
 
         <p className="text-center mt-4 text-sm">
           Don't have an account? <a href="/auth/signup" className="text-blue-500">Sign Up</a>

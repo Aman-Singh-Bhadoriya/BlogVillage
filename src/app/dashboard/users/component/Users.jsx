@@ -34,7 +34,7 @@ export default function Users() {
   }, [user]);
 
   const handleChangeRole = async (id, newRole) => {
-    if (currentUserRole !== "admin") {
+    if (currentUserRole !== "super-admin") {
       alert("Only admins can change roles.");
       return;
     }
@@ -69,22 +69,23 @@ export default function Users() {
             <th className="border p-2">Name</th>
             <th className="border p-2">Email</th>
             <th className="border p-2">Role</th>
-            {currentUserRole === "admin" && <th className="border p-2">Actions</th>}
+            {currentUserRole === "super-admin" && <th className="border p-2">Actions</th>}
           </tr>
         </thead>
         <tbody>
           {users.map(user => (
             <tr key={user.id}>
-              <td className="border p-2">{user.fullName}</td>
+              <td className="border p-2">{user.displayName}</td>
               <td className="border p-2">{user.email}</td>
               <td className="border p-2">{user.role}</td>
-              {currentUserRole === "admin" && (
+              {currentUserRole === "super-admin" && (
                 <td className="border p-2">
                   <select
                     value={user.role}
                     onChange={e => handleChangeRole(user.id, e.target.value)}
                     className="border rounded p-1"
                   >
+                    <option value="super-admin">Super admin</option>
                     <option value="admin">Admin</option>
                     <option value="author">Author</option>
                     <option value="reader">Reader</option>

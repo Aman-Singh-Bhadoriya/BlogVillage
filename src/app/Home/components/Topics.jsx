@@ -23,7 +23,7 @@ export default function Topics() {
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
           Explore Topics
         </h2>
-        <p className="mt-4 text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        <p className="mt-4 text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-12">
           Discover content organized by topics that interest you the most
         </p>
       </div>
@@ -53,10 +53,10 @@ export default function Topics() {
           ))}
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center ">
         <Link
-          href="/blogs"
-          className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
+          href="/Home/category"
+          className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg mb-12 transition duration-300 ease-in-out transform hover:-translate-y-1"
         >
           View All Topics
         </Link>
