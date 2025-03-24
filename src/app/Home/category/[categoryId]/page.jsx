@@ -2,64 +2,64 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../../../utils/firebase";
-import BlogList from "../../components/BlogList"; // Create this component for blog display
+import { useCategories } from "../../api/useCategories";
+import { fetchBlogsByCategory } from "../../api/fetchBlogsByCategory";
+import BlogCard from "../../components/BlogCard"; // ✅ Import BlogCard Component
 
 export default function CategoryBlogsPage() {
-    const { categoryId } = useParams();
-    const [blogs, setBlogs] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const { categoryId } = useParams();
+  const { categories, loading: categoriesLoading } = useCategories();
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [categoryTitle, setCategoryTitle] = useState("Unknown Category");
+  const [description, setDescription] = useState(""); // ✅ Add description state
+  const [visibleCount, setVisibleCount] = useState(10);
 
-    useEffect(() => {
-        const fetchBlogs = async () => {
-            setLoading(true);
-            try {
-                const q = query(
-                    collection(db, "blogs"),
-                    where("categoryId", "==", categoryId)
-                );
-                const querySnapshot = await getDocs(q);
-                const blogsData = querySnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-                setBlogs(blogsData);
-            } catch (error) {
-                console.error("Error fetching blogs:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+  useEffect(() => {
+    if (categories.length > 0) {
+      const category = categories.find((cat) => cat.id === categoryId);
+      if (category) {
+        setCategoryTitle(category.name);
+        setDescription(category.description || ""); // ✅ Set category description
+      }
+    }
+  }, [categories, categoryId]);
 
-        if (categoryId) {
-            fetchBlogs();
-        }
-    }, [categoryId]);
-
-    if (loading) {
-        return <p className="text-center text-gray-500">Loading blogs...</p>;
+  useEffect(() => {
+    async function getBlogs() {
+      try {
+        const categoryBlogs = await fetchBlogsByCategory(categoryId);
+        setBlogs(categoryBlogs);
+      } catch (error) {
+        console.error("Error fetching category blogs:", error);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    return (
-        <div className="py-12 bg-gray-50 dark:bg-neutral-900">
-            <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-                    Blogs under {categoryId}
-                </h2>
-            </div>
+    getBlogs();
+  }, [categoryId]);
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {blogs.map((blog) => (
-                    <BlogList
-                        key={blog.id}
-                        title={blog.title}
-                        excerpt={blog.excerpt}
-                        image={blog.image}
-                        link={`/blog/${blog.slug}`}
-                    />
-                ))}
-            </div>
-        </div>
-    );
+  if (categoriesLoading || loading) {
+    return <p className="text-center text-gray-500">Loading blogs...</p>;
+  }
+
+  return (
+    <div className="py-12 px-18 bg-gray-50 dark:bg-neutral-900">
+      <div className="text-center mb-12">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+          {categoryTitle}
+        </h1>
+        {description && ( // ✅ Only show if description exists
+          <p className="text-gray-600 dark:text-gray-300 mt-2 max-w-2xl mx-auto">{description}</p>
+        )}
+      </div>
+
+      <div className="py-6 px-8 flex flex-col gap-6">
+        {blogs.slice(0, visibleCount).map((blog, index) => (
+          <BlogCard key={blog.id} blog={blog} index={index} />
+        ))}
+      </div>
+    </div>
+  );
 }

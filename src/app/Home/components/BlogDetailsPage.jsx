@@ -45,7 +45,6 @@ export default function BlogDetailsPage({ blog }) {
         )}
 
         <CardContent>
-          {/* ✅ Blog Title & Meta Info */}
           <Typography 
             variant="h4" 
             fontWeight="bold" 
@@ -87,7 +86,9 @@ export default function BlogDetailsPage({ blog }) {
             }}
             sx={{ 
               lineHeight: 1.8, 
-              fontFamily: "'Merriweather', serif" // ✅ Body font
+              fontFamily: "'Merriweather', serif",
+              px:"12px",
+              
             }}
           />
         </CardContent>

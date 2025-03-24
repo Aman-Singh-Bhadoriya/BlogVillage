@@ -16,7 +16,6 @@ export function useCategories() {
           id: doc.id,
           ...doc.data(),
         }));
-
         setCategories(categoryData);
       } catch (error) {
         console.error("Error fetching categories:", error);

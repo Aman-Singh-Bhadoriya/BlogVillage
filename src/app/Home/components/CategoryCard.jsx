@@ -1,5 +1,5 @@
-export default function CategoryCard({ title, description, icon, link, className }) {
-  // console.log(key)
+export default function CategoryCard({title, description, icon, link, className }) {
+
   return (
     <div
       className={`group rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${className}`}

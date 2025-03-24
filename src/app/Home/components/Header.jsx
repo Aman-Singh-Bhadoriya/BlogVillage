@@ -51,19 +51,19 @@ export default function Header() {
               Home
             </Link>
             <Link
-              href="/Home/all-blogs"
+              href="/Home/blogs"
               className="text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
             >
               All Blogs
             </Link>
             <Link
-              href="/Home/topics"
+              href="/Home/category"
               className="text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
             >
               Topics
             </Link>
             <Link
-              href="/Home/contact"
+              href="/Home/Contect"
               className="text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
             >
               Contact
