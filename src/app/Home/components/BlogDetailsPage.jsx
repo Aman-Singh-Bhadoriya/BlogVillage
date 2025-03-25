@@ -6,7 +6,7 @@ import RelatedPosts from "./RelatedPosts";
 import DOMPurify from "dompurify";
 
 export default function BlogDetailsPage({ blog }) {
-  if (!blog) return <Typography align="center" sx={{ py: 5 }}>Blog not found.</Typography>;
+  if (!blog) return <Typography align="center" sx={{ py: 5, color: "white" }}>Blog not found.</Typography>;
 
   const handleShare = () => {
     if (navigator.share) {
@@ -22,15 +22,24 @@ export default function BlogDetailsPage({ blog }) {
 
   return (
     <Box 
-      maxWidth="lg" 
       mx="auto" 
       py={5} 
-      px={3} 
+      px={10} 
       sx={{
-        fontFamily: "'Merriweather', serif", // ✅ Ensure body font applied globally
+        fontFamily: "'Merriweather', serif",
+        color: "rgb(229 231 235)", // Text color (gray-200)
+        borderRadius: "12px",
       }}
     >
-      <Card sx={{ boxShadow: 3, borderRadius: 3, overflow: "hidden" }}>
+      <Card 
+        sx={{ 
+          boxShadow: 3, 
+          borderRadius: 3, 
+          overflow: "hidden",
+          backgroundColor: "rgb(31 41 55)", // 🌙 Dark Card Background (gray-800)
+          color: "rgb(229 231 235)", // Light Text (gray-200)
+        }}
+      >
         {/* ✅ Blog Image with Fixed Height */}
         {blog.image && (
           <CardMedia
@@ -50,17 +59,19 @@ export default function BlogDetailsPage({ blog }) {
             fontWeight="bold" 
             gutterBottom
             sx={{ 
-              fontFamily: "'Inter', sans-serif" // ✅ Heading font
+              fontFamily: "'Inter', sans-serif",
+              color: "rgb(229 231 235)", // 🌙 Light text (gray-200)
             }}
           >
             {blog.title}
           </Typography>
+
           <Grid container justifyContent="space-between" alignItems="center" mb={2}>
             <Typography 
               variant="body2" 
-              color="text.secondary"
               sx={{
-                fontFamily: "'Merriweather', serif"
+                fontFamily: "'Merriweather', serif",
+                color: "rgb(156 163 175)", // 🌙 gray-400
               }}
             >
               {"Date of Publish: "}
@@ -71,7 +82,7 @@ export default function BlogDetailsPage({ blog }) {
 
             {/* ✅ Share Button */}
             <Tooltip title="Share this post">
-              <IconButton onClick={handleShare} color="primary">
+              <IconButton onClick={handleShare} sx={{ color: "rgb(96 165 250)" }}>
                 <ShareIcon />
               </IconButton>
             </Tooltip>
@@ -80,15 +91,14 @@ export default function BlogDetailsPage({ blog }) {
           {/* ✅ Render Blog Content */}
           <Typography
             variant="body1"
-            color="text.primary"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(blog.content),
             }}
             sx={{ 
               lineHeight: 1.8, 
               fontFamily: "'Merriweather', serif",
-              px:"12px",
-              
+              px: "12px",
+              color: "rgb(209 213 219)", // 🌙 Light gray-300 for readability
             }}
           />
         </CardContent>
