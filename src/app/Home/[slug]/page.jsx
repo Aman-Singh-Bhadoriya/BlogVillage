@@ -49,7 +49,7 @@ export default function Page() {
   if (!blog) return <p className="text-center py-10">Blog not found.</p>;
 
 
-  return <div className="py-12 lg:px-32 md:px-10">
+  return <div className="py-12 lg:px-64 md:px-10">
     <BlogDetailsPage blog={blog} />
     </div>
 }

@@ -23,38 +23,33 @@ export default function RelatedPosts({ categoryId, currentPostId }) {
   if (relatedPosts.length === 0) return null;
 
   return (
-    <div className="mt-12">
-      {/* ✅ Section Heading */}
+    <div className="mt-12 md:px-12">
       <h2 className="text-3xl font-bold mb-6 text-gray-700">Related Posts</h2>
 
-      {/* ✅ Grid Container */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {relatedPosts.map((post) => (
           <div
             key={post.id}
             className="text-gray-600 bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:-translate-y-1 flex flex-col h-full"
           >
-            {/* ✅ Post Image */}
             {post.image && (
               <img
                 src={post.image}
                 alt={post.title}
-                className="w-full h-40 object-cover"
+                className="w-full h-60 object-cover"
               />
             )}
 
-            {/* ✅ Card Content */}
             <div className="p-4 flex flex-col flex-grow">
               <h3 className="text-2xl font-bold">{post.title}</h3>
 
               <div
                 className="text-gray-600 pt-2 line-clamp-2 flex-grow"
                 dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(post.content), // ✅ Clean HTML here
+                  __html: DOMPurify.sanitize(post.content), 
                 }}
               />
 
-              {/* ✅ Read More Button Fixed at Bottom */}
               <div className="mt-auto">
                 <button
                   onClick={() => router.push(`/Home/${post.slug}`)}

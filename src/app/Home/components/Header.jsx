@@ -104,12 +104,12 @@ export default function Header() {
             ) : (
               <>
                 <Link href="/auth/login">
-                  <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 dark:bg-neutral-800 rounded-md hover:bg-gray-200 dark:hover:bg-neutral-700 transition duration-150 ease-in-out">
+                  <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition duration-150 ease-in-out">
                     Login
                   </button>
                 </Link>
                 <Link href="/auth/signup">
-                  <button className="ml-4 px-4 py-2 text-sm font-medium rounded-md bg-primary-500 text-white hover:bg-primary-600 transition duration-150 ease-in-out">
+                  <button className="ml-4 px-4 py-2 text-sm font-medium rounded-md bg-primary-100 text-primary-700 hover:bg-primary-200 transition duration-150 ease-in-out">
                     Sign up
                   </button>
                 </Link>
@@ -121,7 +121,7 @@ export default function Header() {
           <div className="md:hidden flex items-center">
             <button
               onClick={toggleMobileMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100  focus:outline-none focus:ring-2 focus:ring-inset"
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
               aria-label="Toggle main menu"
@@ -142,8 +142,8 @@ export default function Header() {
 
       {/* ✅ Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-neutral-900">
-          <Link href="/Home" className="block px-4 py-2 text-gray-900">
+        <div className="md:hidden bg-white absolute top-16 h-screen w-screen">
+          <Link href="/Home" className="block px-4 py-2 text-gray-700">
             Home
           </Link>
           <Link href="/Home/all-blogs" className="block px-4 py-2 text-gray-700">
@@ -156,7 +156,7 @@ export default function Header() {
             Contact
           </Link>
           {user ? (
-            <div className="border-t border-gray-200 dark:border-neutral-700 px-4 py-3">
+            <div className="border-t h-screen border-gray-200 px-4 py-3">
               <div className="flex items-center">
                 {/* <img
                   src={user.photoURL || "/default-avatar.png"}
@@ -177,10 +177,10 @@ export default function Header() {
           ) : (
             <div className="flex items-center justify-between px-4 py-3">
               <Link href="/auth/signup">
-                <button className="btn-primary bg-gray-500 py-1 px-2 rounded-lg">Sign up</button>
+                <button className="btn-primary bg-gray-200 p-2 rounded-lg">Sign up</button>
               </Link>
               <Link href="/auth/login">
-                <button className="btn-secondary bg-gray-500 py-1 px-2 rounded-lg">Login</button>
+                <button className="btn-secondary bg-gray-200 p-2 rounded-lg">Login</button>
               </Link>
             </div>
           )}
