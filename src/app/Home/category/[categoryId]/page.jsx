@@ -47,7 +47,7 @@ export default function CategoryBlogsPage() {
   return (
     <div className="lg:py-12 md:py-5 lg:px-18 md:px-5 bg-gray-50 ">
       <div className="text-center lg:mb-12 mb-8">
-        <h1 className="lg:text-3xl text-2xl mt-6 font-bold text-gray-700 ">
+        <h1 className="lg:text-3xl text-3xl mt-6 font-bold text-gray-700 ">
           {categoryTitle}
         </h1>
         {description && ( // ✅ Only show if description exists

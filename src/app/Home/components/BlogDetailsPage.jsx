@@ -26,7 +26,7 @@ export default function BlogDetailsPage({ blog }) {
     <div className="mx-auto font-merriweather text-gray-200">
       <div className="overflow-hidden">
         <div className="py-6 lg:px-12 px-6">
-          <h1 className="lg:text-5xl md:text-3xl font-bold text-gray-700 font-inter mb-4">
+          <h1 className="lg:text-5xl text-3xl font-bold text-gray-700 font-inter mb-4">
             {blog.title}
           </h1>
           <div className="flex justify-between items-center text-gray-500 mb-4 border-b border-b-gray-700 pb-2">

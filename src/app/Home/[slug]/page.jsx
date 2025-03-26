@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { getBlogBySlug } from "../api/getBlogBySlug";
 import { setPageMetadata } from "../api/setMetadata";
-import BlogDetailsPage from "../components/BlogDetailsPage"; // ✅ Import from new file
+import BlogDetailsPage from "../components/BlogDetailsPage";
 
 export default function Page() {
   const { slug } = useParams();

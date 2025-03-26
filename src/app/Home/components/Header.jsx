@@ -142,21 +142,21 @@ export default function Header() {
 
       {/* ✅ Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white absolute top-16 h-screen w-screen">
+        <div className="md:hidden bg-white absolute top-16 h-60 w-screen">
           <Link href="/Home" className="block px-4 py-2 text-gray-700">
             Home
           </Link>
-          <Link href="/Home/all-blogs" className="block px-4 py-2 text-gray-700">
+          <Link href="/Home/blogs" className="block px-4 py-2 text-gray-700">
             All Blogs
           </Link>
-          <Link href="/Home/topics" className="block px-4 py-2 text-gray-700">
+          <Link href="/Home/category" className="block px-4 py-2 text-gray-700">
             Topics
           </Link>
-          <Link href="/Home/contact" className="block px-4 py-2 text-gray-700">
+          <Link href="/Home/Contect" className="block px-4 py-2 text-gray-700">
             Contact
           </Link>
           {user ? (
-            <div className="border-t h-screen border-gray-200 px-4 py-3">
+            <div className="border-t border-gray-200 px-4 py-3">
               <div className="flex items-center">
                 {/* <img
                   src={user.photoURL || "/default-avatar.png"}
