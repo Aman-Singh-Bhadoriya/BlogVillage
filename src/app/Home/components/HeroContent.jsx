@@ -14,13 +14,13 @@ export default function HeroContent() {
       </p>
       <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
         <Link
-          href="/blogs"
+          href="/Home/blogs"
           className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
         >
           Start Reading
         </Link>
         <Link
-          href="/categories"
+          href="/Home/category"
           className="bg-primary-600 text-white hover:bg-primary-700 font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out border border-primary-200 transform hover:-translate-y-1"
         >
           Explore Topics

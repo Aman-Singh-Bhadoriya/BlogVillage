@@ -18,7 +18,7 @@ export default function Topics() {
   }
 
   return (
-    <div className="px-32 bg- py-12">
+    <div className="lg:px-32 px-12 py-12">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
           Explore Topics
@@ -52,7 +52,7 @@ export default function Topics() {
       <div className="flex justify-center ">
         <Link
           href="/Home/category"
-          className="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg mb-12 transition duration-300 ease-in-out transform hover:-translate-y-1"
+          className="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
         >
           View All Topics
         </Link>

@@ -24,9 +24,9 @@ export default function BlogDetailsPage({ blog }) {
 
   return (
     <div className="mx-auto font-merriweather text-gray-200">
-      <div className="overflow-hidden px-32">
-        <div className="px-32 py-6">
-          <h1 className="text-5xl font-bold text-gray-700 font-inter mb-4">
+      <div className="overflow-hidden ">
+        <div className="py-6 lg:px-32 md:px-2">
+          <h1 className="lg:text-5xl md:text-3xl font-bold text-gray-700 font-inter mb-4">
             {blog.title}
           </h1>
           <div className="flex justify-between items-center text-gray-500 mb-4 border-b border-b-gray-700 px-1 pb-2">
@@ -50,14 +50,14 @@ export default function BlogDetailsPage({ blog }) {
           <img
             src={blog.image}
             alt={blog.title} 
-            className="w-full h-full object-cover px-10"
+            className="w-full h-full object-cover lg:px-10"
           />
         )}
         <p className="text-center pt-4 text-gray-600"><u>Photo By: Aman Singh</u></p>
 
-        <div className="px-32 py-6">
+        <div className="lg:px-32 md:px-12 py-6">
           <div
-            className="prose max-w-none text-xl text-gray-600 leading-relaxed px-3"
+            className="prose max-w-none lg:text-xl md:xs text-gray-600 leading-relaxed px-3"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(blog.content),
             }}

@@ -7,7 +7,7 @@ export default function CategoryCard({
 }) {
   return (
     <div
-      className={`group rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-gray-800 ${className}`}
+      className={`group rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${className}`}
     >
       <div className="py-5 px-4 flex flex-col h-full">
         {/* ✅ Icon */}
