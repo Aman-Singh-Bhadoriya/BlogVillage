@@ -2,9 +2,16 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="bg-gray-50 dark:bg-neutral-900">
-      <h1 className="text-3xl font-heading">Heading Example</h1>
-      <p className="font-body text-gray-700">Body Example</p>
+    <div className="bg-gray-50 h-screen flex justify-center items-center">
+      <h1>
+        <a
+          href={`/Home`}
+          className="px-16 py-8 bg-red-500 border rounded-3xl text-3xl text-white"
+          aria-label={`Read more about`}
+        >
+          Welcome: Click for starting
+        </a>
+      </h1>
     </div>
   );
 }

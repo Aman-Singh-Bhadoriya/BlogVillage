@@ -1,4 +1,3 @@
-import PerformanceChart from "./components/BarChart";
 import FeaturedBlogs from "./components/FeaturedBlogs";
 import GetinTouch from "./components/Get In Touch";
 import Hero from "./components/Hero";
