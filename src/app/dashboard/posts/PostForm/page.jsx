@@ -21,7 +21,7 @@ import {
   Box,
 } from "@mui/material";
 import { useAuth } from "../../../context/AuthContext";
-import SlugInput from "./Component/SlugInput";
+import SlugInput from "./component/SlugInput";
 import DOMPurify from "dompurify";
 
 export default function PostForm() {
