@@ -4,30 +4,23 @@ import DOMPurify from "dompurify";
 export default function BlogCard({ blog, index }) {
   const isEven = index % 2 === 0;
   const bgGradient = isEven
-    ? "from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30"
-    : "from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30";
-  const circleColor = isEven ? "bg-red-400/20 dark:bg-red-600/20" : "bg-green-400/20 dark:bg-green-600/20";
-  const iconBg = isEven ? "bg-red-500 dark:bg-red-600" : "bg-green-500 dark:bg-green-600";
-  const textColor = isEven ? "text-red-600 dark:text-red-400" : "text-green-600 dark:text-green-400";
-  const hoverTextColor = isEven ? "hover:text-red-800 dark:hover:text-red-300" : "hover:text-green-800 dark:hover:text-green-300";
+    ? "from-green-100 to-green-300" 
+    : "from-red-100 to-red-300";
+  const circleColor = isEven ? "bg-green-700/100" :  "bg-red-700/100";
+  const iconBg = isEven ? "bg-green-500" : "bg-red-500";
+  const textColor = isEven ? "text-green-900" : "text-red-900";
 
   return (
     <div
-      className={`group bg-gradient-to-br ${bgGradient} rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 relative`}
+      className={`group bg-gradient-to-br ${bgGradient} rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:-translate-y-1 relative`}
     >
       {/* Floating Circle */}
-      <div className={`absolute top-0 right-0 w-32 h-32 ${circleColor} rounded-full -mr-16 -mt-16`}></div>
+      {/* <div className={`absolute top-0 right-0 w-32 h-32 ${circleColor} rounded-full -mr-16 -mt-16`}></div> */}
 
       <div className="p-8 relative">
-        {/* Icon */}
-        
-
-        {/* Blog Title */}
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 truncate">{blog.title}</h3>
-
-        {/* Blog Description */}
+        <h3 className="text-2xl font-bold text-gray-700  mb-3 truncate">{blog.title}</h3>
         <p
-          className="text-gray-700 dark:text-gray-300 mb-6 line-clamp-3"
+          className="text-gray-600  mb-6 line-clamp-3"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize((blog.content || "").slice(0, 420)) + "...",
           }}
@@ -39,7 +32,7 @@ export default function BlogCard({ blog, index }) {
 
           <a
             href={`/Home/${blog.slug}`}
-            className={`font-medium flex items-center ${textColor} ${hoverTextColor} transition-colors`}
+            className={`font-medium flex items-center ${textColor} transition-colors`}
           >
             Read More
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">

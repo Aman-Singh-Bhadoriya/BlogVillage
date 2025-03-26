@@ -2,15 +2,15 @@ export default function ContectInfo(){
     return(
         <div className="">
           <div className="mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Contact Information</h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
+            <p className="text-gray-600 mb-8">
               Feel free to reach out to us through the following channels. We're always happy to connect with our readers and the developer community.
             </p>
 
             <div className="space-y-6">
               <div className="flex items-start">
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-800 flex items-center justify-center text-primary-600 dark:text-primary-300">
+                  <div className="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-50">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                       <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                       <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
@@ -18,45 +18,45 @@ export default function ContectInfo(){
                   </div>
                 </div>
                 <div className="ml-4">
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-white">Email</h4>
-                  <p className="mt-1 text-gray-600 dark:text-gray-300">contact@blogsite.com</p>
+                  <h4 className="text-lg font-medium text-gray-900">Email</h4>
+                  <p className="mt-1 text-gray-600">contact@blogsite.com</p>
                 </div>
               </div>
 
               <div className="flex items-start">
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-800 flex items-center justify-center text-primary-600 dark:text-primary-300">
+                  <div className="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-50">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                     </svg>
                   </div>
                 </div>
                 <div className="ml-4">
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-white">Office</h4>
-                  <p className="mt-1 text-gray-600 dark:text-gray-300">123 Tech Drive, Suite 100<br />San Francisco, CA 94107</p>
+                  <h4 className="text-lg font-medium text-gray-900">Office</h4>
+                  <p className="mt-1 text-gray-600">123 Tech Drive, Suite 100<br />San Francisco, CA 94107</p>
                 </div>
               </div>
 
               <div className="flex items-start">
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-800 flex items-center justify-center text-primary-600 dark:text-primary-300">
+                  <div className="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-50">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                       <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                     </svg>
                   </div>
                 </div>
                 <div className="ml-4">
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-white">Phone</h4>
-                  <p className="mt-1 text-gray-600 dark:text-gray-300">+1 (555) 123-4567</p>
+                  <h4 className="text-lg font-medium text-gray-900">Phone</h4>
+                  <p className="mt-1 text-gray-600">+1 (555) 123-4567</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="mt-auto">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Follow Us</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">Follow Us</h3>
             <div className="flex space-x-5">
-              <a href="#twitter" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300">
+              <a href="#twitter" className="text-gray-50 hover:text-primary-60 transition-colors duration-300">
                 <span className="sr-only">Twitter</span>
                 <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-neutral-700 hover:bg-primary-100 dark:hover:bg-primary-800 flex items-center justify-center transition-colors duration-300">
                   <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -65,7 +65,7 @@ export default function ContectInfo(){
                 </div>
               </a>
 
-              <a href="#github" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300">
+              <a href="#github" className="text-gray-50 hover:text-white transition-colors duration-300">
                 <span className="sr-only">GitHub</span>
                 <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-neutral-700 hover:bg-primary-100 dark:hover:bg-primary-800 flex items-center justify-center transition-colors duration-300">
                   <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -74,7 +74,7 @@ export default function ContectInfo(){
                 </div>
               </a>
 
-              <a href="#linkedin" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300">
+              <a href="#linkedin" className="text-gray-50 hover:text-white transition-colors duration-300">
                 <span className="sr-only">LinkedIn</span>
                 <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-neutral-700 hover:bg-primary-100 dark:hover:bg-primary-800 flex items-center justify-center transition-colors duration-300">
                   <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -83,7 +83,7 @@ export default function ContectInfo(){
                 </div>
               </a>
 
-              <a href="#youtube" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300">
+              <a href="#youtube" className="text-gray-50 hover:text-white transition-colors duration-300">
                 <span className="sr-only">YouTube</span>
                 <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-neutral-700 hover:bg-primary-100 dark:hover:bg-primary-800 flex items-center justify-center transition-colors duration-300">
                   <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

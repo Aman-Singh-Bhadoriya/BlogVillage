@@ -63,15 +63,14 @@ export default function BlogList() {
   };
 
   return (
-    <div className="py-6 px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div className="py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       {blogs.slice(0, visibleCount).map((blog) => (
         <div
           key={blog.id}
-          className="bg-white dark:bg-neutral-800 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative"
+          className="bg-gray-50 mb-4 border rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 relative"
         >
-          {/* ✅ Blog Image */}
           {blog.image ? (
-            <div className="relative h-[180px]">
+            <div className="h-[180px]">
               <img
                 src={blog.image}
                 alt={blog.title}
@@ -97,32 +96,25 @@ export default function BlogList() {
             </div>
           )}
 
-          {/* ✅ Blog Content */}
-          <div className="p-6">
-            {/* ✅ Category and Read Time */}
-            <div className="flex items-center justify-between space-x-2 mb-3">
+          <div className="p-3">
+            <div className="flex items-center justify-between space-x-2 mb-2">
               <span
-                className={`${
-                  blog.categoryName === "Uncategorized"
-                    ? "bg-red-400" // 🚨 Red for Uncategorized
-                    : "bg-blue-100 dark:bg-green-900 text-white dark:text-blue-300"
-                } text-s font-medium px-2.5 py-0.5 rounded-full`}
+                className={`border bg-green-500 text-s text-gray-50 font-medium px-2.5 py-0.5 rounded-full`}
               >
                 {blog.categoryName}
               </span>
-              <span className="text-gray-500 dark:text-gray-400 text-sm">
+              <span className="text-gray-500  text-sm">
                 {blog.createdAt}
               </span>
             </div>
 
             {/* ✅ Blog Title */}
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 truncate">
+            <h3 className="text-xl font-bold text-gray-700 mb-2 truncate">
               {blog.title}
             </h3>
 
-            {/* ✅ Blog Description */}
             <p
-              className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-5"
+              className="text-gray-600 mb-4 line-clamp-5"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(blog.content.slice(0, 120)) + "...",
               }}
@@ -153,11 +145,11 @@ export default function BlogList() {
                     </svg>
                   </div>
                 )}
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span className="text-sm font-medium text-gray-500">
                   {blog.author}
                 </span>
               </div>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
+              <span className="text-sm text-gray-500">
                 {blog.date}
               </span>
             </div>

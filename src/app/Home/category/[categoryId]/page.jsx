@@ -45,17 +45,17 @@ export default function CategoryBlogsPage() {
   }
 
   return (
-    <div className="py-12 px-18 bg-gray-50 dark:bg-neutral-900">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+    <div className="lg:py-12 md:py-5 lg:px-18 md:px-5 bg-gray-50 ">
+      <div className="text-center lg:mb-12 mb-8">
+        <h1 className="lg:text-3xl text-2xl mt-6 font-bold text-gray-700 ">
           {categoryTitle}
         </h1>
         {description && ( // ✅ Only show if description exists
-          <p className="text-gray-600 dark:text-gray-300 mt-2 max-w-2xl mx-auto">{description}</p>
+          <p className="text-gray-600 lg:text-xl text-xl  mt-2 mx-auto">{description}</p>
         )}
       </div>
 
-      <div className="py-6 px-8 flex flex-col gap-6">
+      <div className="py-6 lg:px-32 px-6 flex flex-col gap-6">
         {blogs.slice(0, visibleCount).map((blog, index) => (
           <BlogCard key={blog.id} blog={blog} index={index} />
         ))}

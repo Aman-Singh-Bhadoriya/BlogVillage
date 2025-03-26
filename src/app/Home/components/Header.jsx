@@ -29,14 +29,14 @@ export default function Header() {
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   return (
-    <nav className="bg-white dark:bg-neutral-900 shadow-md sticky top-0 z-50">
+    <nav className="bg-white shadow-md sticky top-0 z-50 lg:px-22">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* ✅ Logo */}
           <div className="flex items-center">
 
           <Link href="/Home">
-              <span className="text-primary-800 dark:text-primary-400 font-bold text-xl">
+              <span className="text-primary-600 font-bold text-xl">
                 BlogSite
               </span>
             </Link>
@@ -46,25 +46,25 @@ export default function Header() {
           <div className="hidden md:flex md:space-x-8 items-center">
             <Link
               href="/Home"
-              className="text-gray-900 dark:text-white hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
+              className="text-gray-700 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
             >
               Home
             </Link>
             <Link
               href="/Home/blogs"
-              className="text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
+              className="text-gray-700 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
             >
               All Blogs
             </Link>
             <Link
               href="/Home/category"
-              className="text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
+              className="text-gray-700 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
             >
               Topics
             </Link>
             <Link
               href="/Home/Contect"
-              className="text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
+              className="text-gray-700 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
             >
               Contact
             </Link>
@@ -74,13 +74,13 @@ export default function Header() {
           <div className="hidden md:flex items-center">
             {user ? (
               <div className="relative">
-                <button onClick={toggleDropdown} className="flex items-center border border-white rounded-lg px-5 py-3">
+                <button onClick={toggleDropdown} className="flex items-center gap-4 border  border-white rounded-lg px-5 py-3">
                   <img
                     src={user.photoURL || "/default-avatar.png"}
                     alt="Profile"
                     className="h-8 w-8 rounded-full"
                   />
-                  <span className="ml-2 text-gray-900 dark:text-white">
+                  <span className="ml-2 text-gray-900">
                     {user.displayName || "User"}
                   </span>
                 </button>
@@ -88,13 +88,13 @@ export default function Header() {
                   <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-neutral-800 shadow-lg rounded-md">
                     <Link
                       href="/profile"
-                      className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-700"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:hover:bg-neutral-700"
                     >
                       Profile
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-700"
+                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 dark:hover:bg-neutral-700"
                     >
                       Logout
                     </button>
@@ -104,7 +104,7 @@ export default function Header() {
             ) : (
               <>
                 <Link href="/auth/login">
-                  <button className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-neutral-800 rounded-md hover:bg-gray-200 dark:hover:bg-neutral-700 transition duration-150 ease-in-out">
+                  <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 dark:bg-neutral-800 rounded-md hover:bg-gray-200 dark:hover:bg-neutral-700 transition duration-150 ease-in-out">
                     Login
                   </button>
                 </Link>
@@ -143,16 +143,16 @@ export default function Header() {
       {/* ✅ Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white dark:bg-neutral-900">
-          <Link href="/Home" className="block px-4 py-2 text-gray-900 dark:text-white">
+          <Link href="/Home" className="block px-4 py-2 text-gray-900">
             Home
           </Link>
-          <Link href="/Home/all-blogs" className="block px-4 py-2 text-gray-500 dark:text-gray-300">
+          <Link href="/Home/all-blogs" className="block px-4 py-2 text-gray-700">
             All Blogs
           </Link>
-          <Link href="/Home/topics" className="block px-4 py-2 text-gray-500 dark:text-gray-300">
+          <Link href="/Home/topics" className="block px-4 py-2 text-gray-700">
             Topics
           </Link>
-          <Link href="/Home/contact" className="block px-4 py-2 text-gray-500 dark:text-gray-300">
+          <Link href="/Home/contact" className="block px-4 py-2 text-gray-700">
             Contact
           </Link>
           {user ? (
@@ -164,10 +164,10 @@ export default function Header() {
                   className="h-8 w-8 rounded-full"
                 /> */}
                 <div className="flex justify-between w-full items-center">
-                  <p className="text-gray-900 dark:text-white py-2 px-4 border rounded-2xl border-white">{user.displayName || "User"}</p>
+                  <p className="text-gray-900 py-2 px-4 border rounded-2xl border-white">{user.displayName || "User"}</p>
                   <button
                     onClick={handleLogout}
-                    className="text-s text-gray-500 dark:text-gray-300 hover:text-red-500 rounded-3xl bg-red-600 py-2 px-4"
+                    className="text-s text-gray-700 hover:text-red-500 rounded-3xl bg-red-600 py-2 px-4"
                   >
                     Logout
                   </button>
@@ -175,7 +175,7 @@ export default function Header() {
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-between px-4 py-3 dark:text-white">
+            <div className="flex items-center justify-between px-4 py-3">
               <Link href="/auth/signup">
                 <button className="btn-primary bg-gray-500 py-1 px-2 rounded-lg">Sign up</button>
               </Link>

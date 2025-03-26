@@ -18,12 +18,12 @@ export default function Page() {
   // console.log(category);
 
   return (
-    <div className="py-12 bg-gray-50 dark:bg-neutral-900">
+    <div className="py-12 ">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-700">
           All Category's
         </h2>
-        <p className="mt-4 text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-12">
+        <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto mb-12">
           Discover content organized by topics that interest you the most
         </p>
       </div>
@@ -36,8 +36,8 @@ export default function Page() {
             description={category.description || "No description available"}
             className={`p-6 rounded-lg shadow-md transition-all duration-300 ${
               index % 2 === 0
-                ? "bg-blue-100 dark:bg-blue-900/30"
-                : "bg-green-100 dark:bg-green-900/30"
+                ? "bg-[#5d83d3]"
+                : "bg-[#72a14c]"
             }`}
             icon={
               <img
