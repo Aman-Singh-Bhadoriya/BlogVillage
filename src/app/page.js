@@ -6,7 +6,7 @@ export default function Home() {
       <h1>
         <a
           href={`/Home`}
-          className="px-16 py-8 bg-red-500 border rounded-3xl text-3xl text-white"
+          className="lg:px-16 px-3 py-8 bg-red-500 border rounded-3xl l:text-3xl text-xl text-white"
           aria-label={`Read more about`}
         >
           Welcome: Click for starting

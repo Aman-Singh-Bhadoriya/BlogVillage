@@ -36,7 +36,7 @@ export default function Signup() {
     try {
       setLoading(true);
       await signUp(formData.email, formData.password, fullName, formData.mobile);
-      router.push("/dashboard");
+      router.push("/Home");
     } catch (err) {
       setError(err.message);
     } finally {
