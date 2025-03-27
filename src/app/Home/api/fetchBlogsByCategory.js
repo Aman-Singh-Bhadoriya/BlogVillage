@@ -5,7 +5,7 @@ export const fetchBlogsByCategory = async (categoryId) => {
   if (!categoryId) return [];
 
   try {
-    const blogsRef = collection(db, "posts"); // Adjust collection name if needed
+    const blogsRef = collection(db, "posts");
     const q = query(blogsRef, where("categoryId", "==", categoryId));
     const querySnapshot = await getDocs(q);
 

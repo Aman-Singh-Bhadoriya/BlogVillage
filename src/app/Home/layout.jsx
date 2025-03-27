@@ -1,6 +1,5 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import MultiLevelDropdown from "./components/MultiLevelDropdown";
 
 export default function Layout({ children }) {
   return (

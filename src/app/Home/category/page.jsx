@@ -15,8 +15,6 @@ export default function Page() {
   if (loading) {
     return <p className="text-center text-gray-500">Loading categories...</p>;
   }
-  // console.log(category);
-
   return (
     <div className="py-12 ">
       <div className="text-center mb-12">

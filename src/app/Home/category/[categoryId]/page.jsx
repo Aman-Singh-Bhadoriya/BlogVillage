@@ -50,7 +50,7 @@ export default function CategoryBlogsPage() {
         <h1 className="lg:text-3xl text-3xl mt-6 font-bold text-gray-700 ">
           {categoryTitle}
         </h1>
-        {description && ( // ✅ Only show if description exists
+        {description && (
           <p className="text-gray-600 lg:text-xl text-xl  mt-2 mx-auto">{description}</p>
         )}
       </div>
