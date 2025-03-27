@@ -103,9 +103,7 @@ export default function BlogList() {
               >
                 {blog.categoryName}
               </span>
-              <span className="text-gray-500  text-sm">
-                {blog.createdAt}
-              </span>
+              <span className="text-gray-500  text-sm">{blog.createdAt}</span>
             </div>
 
             {/* ✅ Blog Title */}
@@ -149,9 +147,6 @@ export default function BlogList() {
                   {blog.author}
                 </span>
               </div>
-              <span className="text-sm text-gray-500">
-                {blog.date}
-              </span>
             </div>
           </div>
 

@@ -85,16 +85,16 @@ export default function Header() {
                   </span>
                 </button>
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-neutral-800 shadow-lg rounded-md">
+                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md">
                     <Link
                       href="/profile"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:hover:bg-neutral-700"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                     >
                       Profile
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 dark:hover:bg-neutral-700"
+                      className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
                     >
                       Logout
                     </button>
@@ -167,7 +167,7 @@ export default function Header() {
                   <p className="text-gray-900 py-2 px-4 border rounded-2xl border-white">{user.displayName || "User"}</p>
                   <button
                     onClick={handleLogout}
-                    className="text-s text-gray-700 hover:text-red-500 rounded-3xl bg-red-600 py-2 px-4"
+                    className="text-s text-primary-50 hover:text-red-500 rounded-3xl bg-red-600 py-2 px-4"
                   >
                     Logout
                   </button>
