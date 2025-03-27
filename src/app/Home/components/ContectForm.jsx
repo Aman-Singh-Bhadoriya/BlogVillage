@@ -1,6 +1,6 @@
 export default function ContactForm() {
     return (
-      <div className="bg-primary-50 rounded-xl shadow-md p-8">
+      <div className="bg-primary-100 rounded-xl shadow-md p-8">
         <h3 className="text-2xl font-bold text-gray-900 mb-6">
           Send Us a Message
         </h3>

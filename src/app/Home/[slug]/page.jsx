@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { getBlogBySlug } from "../api/getBlogBySlug";
 import { setPageMetadata } from "../api/setMetadata";
-import BlogDetailsPage from "../components/BlogDetailsPage"; // ✅ Import from new file
+import BlogDetailsPage from "../components/BlogDetailsPage";
 
 export default function Page() {
   const { slug } = useParams();
@@ -49,7 +49,7 @@ export default function Page() {
   if (!blog) return <p className="text-center py-10">Blog not found.</p>;
 
 
-  return <div className="py-12 lg:px-32 md:px-10">
+  return <div className="py-12 lg:px-64 md:px-10">
     <BlogDetailsPage blog={blog} />
     </div>
 }

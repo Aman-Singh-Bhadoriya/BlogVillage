@@ -18,9 +18,9 @@ export default function Topics() {
   }
 
   return (
-    <div className="lg:px-32 px-12 py-12">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+    <div className="lg:px-32 px-6 py-12">
+      <div className="text-center lg:mb-12 mb-8">
+        <h2 className="text-4xl md:text-4xl font-bold text-gray-800">
           Explore Topics
         </h2>
         <p className="mt-4 text-xl text-gray-700 max-w-3xl mx-auto mb-12">

@@ -24,12 +24,12 @@ export default function BlogDetailsPage({ blog }) {
 
   return (
     <div className="mx-auto font-merriweather text-gray-200">
-      <div className="overflow-hidden ">
-        <div className="py-6 lg:px-32 md:px-2">
-          <h1 className="lg:text-5xl md:text-3xl font-bold text-gray-700 font-inter mb-4">
+      <div className="overflow-hidden">
+        <div className="py-6 lg:px-12 px-6">
+          <h1 className="lg:text-5xl text-3xl font-bold text-gray-700 font-inter mb-4">
             {blog.title}
           </h1>
-          <div className="flex justify-between items-center text-gray-500 mb-4 border-b border-b-gray-700 px-1 pb-2">
+          <div className="flex justify-between items-center text-gray-500 mb-4 border-b border-b-gray-700 pb-2">
             <p className="text-sm">
               Date of Publish:{" "}
               {blog.createdAt
@@ -50,12 +50,12 @@ export default function BlogDetailsPage({ blog }) {
           <img
             src={blog.image}
             alt={blog.title} 
-            className="w-full h-full object-cover lg:px-10"
+            className="w-full h-full object-cover"
           />
         )}
         <p className="text-center pt-4 text-gray-600"><u>Photo By: Aman Singh</u></p>
 
-        <div className="lg:px-32 md:px-12 py-6">
+        <div className="lg:px-12 px-5 py-6">
           <div
             className="prose max-w-none lg:text-xl md:xs text-gray-600 leading-relaxed px-3"
             dangerouslySetInnerHTML={{
@@ -65,7 +65,7 @@ export default function BlogDetailsPage({ blog }) {
         </div>
       </div>
 
-      <div className="mt-6 px-64">
+      <div className="mt-6 lg:px-12 px-6">
         <RelatedPosts categoryId={blog.categoryId} currentPostId={blog.id} />
       </div>
     </div>
