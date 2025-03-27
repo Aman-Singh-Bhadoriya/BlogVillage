@@ -47,21 +47,17 @@ export default function Signup() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md">
-        {/* Title */}
         <Typography variant="h4" className="text-center font-bold text-blue-600 mb-6">
           Create an Account
         </Typography>
 
-        {/* Error Message */}
         {error && (
           <Typography variant="body2" className="text-center text-red-500 mb-4">
             {error}
           </Typography>
         )}
 
-        {/* Signup Form */}
         <form onSubmit={handleSignUp} className="flex flex-col gap-4">
-          {/* Name Fields */}
           <Box display="flex" gap={1}>
             <TextField
               label="First Name"

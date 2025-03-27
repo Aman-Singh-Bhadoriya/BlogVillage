@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { signIn, googleSignIn } from "../../utils/auth";
 import { useRouter } from "next/navigation";
+import { TextField } from "@mui/material";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -27,7 +28,7 @@ export default function Login() {
   // const handleGoogleSignIn = async () => {
   //   try {
   //     await googleSignIn();
-  //     router.push("/Home"); 
+  //     router.push("/Home");
   //   } catch (err) {
   //     setError("Google Sign-In failed. Try again.");
   //   }
@@ -36,31 +37,39 @@ export default function Login() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">Sign In</h2>
+        <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">
+          Sign In
+        </h2>
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
         <form onSubmit={handleSignIn} className="flex flex-col gap-4">
-          <input
+          
+          <TextField
+            label="Email Address"
             type="email"
             name="email"
-            placeholder="Email Address"
-            className="p-2 border rounded"
             value={formData.email}
             onChange={handleChange}
             required
+            fullWidth
+            size="small"
           />
-
-          <input
+          
+          <TextField
+            label="Password"
             type="password"
             name="password"
-            placeholder="Password"
-            className="p-2 border rounded"
             value={formData.password}
             onChange={handleChange}
             required
+            fullWidth
+            size="small"
           />
 
-          <button type="submit" className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+          >
             Sign In
           </button>
         </form>
@@ -80,7 +89,10 @@ export default function Login() {
         </button> */}
 
         <p className="text-center mt-4 text-sm">
-          Don't have an account? <a href="/auth/signup" className="text-blue-500">Sign Up</a>
+          Don't have an account?{" "}
+          <a href="/auth/signup" className="text-blue-500">
+            Sign Up
+          </a>
         </p>
       </div>
     </div>
