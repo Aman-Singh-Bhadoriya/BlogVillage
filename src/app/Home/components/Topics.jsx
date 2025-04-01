@@ -13,6 +13,11 @@ export default function Topics() {
     setVisibleCount((prev) => prev + 10);
   };
 
+  // Filter out inactive categories
+  const activeCategories = categories.filter(
+    (category) => category.status === "active"
+  );
+
   if (loading) {
     return <p className="text-center text-gray-500">Loading categories...</p>;
   }
@@ -29,7 +34,7 @@ export default function Topics() {
       </div>
 
       <div className="py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {categories.slice(0, Math.min(visibleCount)).map((category, index) => (
+        {activeCategories.slice(0, Math.min(visibleCount)).map((category, index) => (
           <CategoryCard
             key={category.id}
             title={category.name}
@@ -44,7 +49,7 @@ export default function Topics() {
                 className="w-full h-full object-cover rounded-xl"
               />
             }
-            link={`/Home/category/${category.id}`} // Change the link to use category.id instead of category.title
+            link={`/Home/category/${category.id}`} // Using category.id
           />
         ))}
       </div>

@@ -109,7 +109,6 @@ export default function PostForm() {
 
     try {
       if (postId) {
-        // ✅ Update existing post
         await updateDoc(doc(db, "posts", postId), {
           title,
           slug,
@@ -123,7 +122,6 @@ export default function PostForm() {
           metaTags: metaTags.split(",").map((tag) => tag.trim()),
         });
       } else {
-        // ✅ Create new post
         if (!user) {
           alert("You must be logged in to create a post");
           return;
@@ -133,6 +131,7 @@ export default function PostForm() {
           title,
           slug,
           content: sanitizedContent,
+          author: user.name,
           image: imageUrl,
           categoryId: categoryId.id,
           categoryName: categoryId.name,
@@ -142,6 +141,7 @@ export default function PostForm() {
           metaTags: metaTags.split(",").map((tag) => tag.trim()),
           authorId: user.uid,
           authorEmail: user.email,
+
           createdAt: new Date(),
         });
       }

@@ -15,8 +15,14 @@ export default function Page() {
   if (loading) {
     return <p className="text-center text-gray-500">Loading categories...</p>;
   }
+
+  // Filter out inactive categories
+  const activeCategories = categories.filter(
+    (category) => category.status === "active"
+  );
+
   return (
-    <div className="py-12 ">
+    <div className="py-12">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-700">
           All Category's
@@ -27,15 +33,13 @@ export default function Page() {
       </div>
 
       <div className="py-6 lg:px-[80px] px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {categories.slice(0, Math.min(visibleCount)).map((category, index) => (
+        {activeCategories.slice(0, Math.min(visibleCount)).map((category, index) => (
           <CategoryCard
             key={category.id}
             title={category.name}
             description={category.description || "No description available"}
             className={`p-6 rounded-lg shadow-md transition-all duration-300 ${
-              index % 2 === 0
-                ? "bg-[#5d83d3]"
-                : "bg-[#72a14c]"
+              index % 2 === 0 ? "bg-[#5d83d3]" : "bg-[#72a14c]"
             }`}
             icon={
               <img
@@ -44,7 +48,7 @@ export default function Page() {
                 className="w-full h-full object-cover rounded-xl"
               />
             }
-            link={`/Home/category/${category.id}`} // Change the link to use category.id instead of category.title
+            link={`/Home/category/${category.id}`}
           />
         ))}
       </div>

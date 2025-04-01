@@ -46,7 +46,6 @@ export default function Page() {
     setLoading(true);
     if (user) {
       try {
-        // ✅ Fetch categories
         const categorySnapshot = await getDocs(collection(db, "categories"));
         const categoryMap = categorySnapshot.docs.reduce((acc, doc) => {
           acc[doc.id] = doc.data().name;
@@ -84,7 +83,6 @@ export default function Page() {
     if (user) fetchPosts();
   }, [user]);
 
-  // ✅ Handle Filter Change
   const handleFilterChange = ({ category, status }) => {
     let filtered = posts;
 
@@ -99,7 +97,6 @@ export default function Page() {
     setFilteredPosts(filtered);
   };
 
-  // ✅ Open Post Form for New Post
   const handleNewPost = () => {
     router.push("/dashboard/posts/PostForm");
   };
@@ -109,7 +106,6 @@ export default function Page() {
     router.push(`/dashboard/posts/PostForm?id=${postId}`);
   };
 
-  // ✅ Handle Post Deletion
   const handleDelete = async (postId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this post?"
@@ -151,10 +147,8 @@ export default function Page() {
         </Button>
       </Box>
 
-      {/* ✅ Filter Component */}
       <Filter onFilterChange={handleFilterChange} />
 
-      {/* ✅ Posts Table */}
       <TableContainer
         component={Paper}
         sx={{

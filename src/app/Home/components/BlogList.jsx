@@ -32,7 +32,7 @@ export default function BlogList() {
             authorImage: data.authorImage || null,
             createdAt: data.createdAt
               ? formatDate(data.createdAt.seconds * 1000)
-              : "Unknown Date", // ✅ Format createdAt date
+              : "Unknown Date",
             date: data.date
               ? new Date(data.date.seconds * 1000).toLocaleDateString()
               : "Unknown Date",
