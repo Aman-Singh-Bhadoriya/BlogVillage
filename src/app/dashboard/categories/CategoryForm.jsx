@@ -16,7 +16,7 @@ export default function CategoryForm({ open, onClose, onCategoryCreated, categor
       setName(category.name);
       setImage(category.image);
       setStatus(category.status || "active");
-      setDescription(category.description || ""); // ✅ Pre-fill description
+      setDescription(category.description || "");
     } else {
       setName("");
       setImage("");
@@ -25,7 +25,6 @@ export default function CategoryForm({ open, onClose, onCategoryCreated, categor
     }
   }, [category]);
 
-  // ✅ Handle form submission for create or update
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,17 +35,15 @@ export default function CategoryForm({ open, onClose, onCategoryCreated, categor
 
     try {
       if (category) {
-        // ✅ Update existing category
         const categoryRef = doc(db, "categories", category.id);
         await updateDoc(categoryRef, {
           name,
           image,
           status,
-          description, // ✅ Include description in update
+          description,
         });
         alert("Category updated successfully!");
       } else {
-        // ✅ Create new category
         await addDoc(collection(db, "categories"), {
           name,
           image,
@@ -56,21 +53,20 @@ export default function CategoryForm({ open, onClose, onCategoryCreated, categor
         alert("Category added successfully!");
       }
 
-      onCategoryCreated(); // ✅ Refresh categories list
-      onClose(); // ✅ Close the modal
+      onCategoryCreated();
+      onClose();
     } catch (error) {
       console.error("Error submitting category:", error);
       alert("Failed to save category");
     }
   };
 
-  // ✅ Handle delete category
   const handleDelete = async () => {
     if (confirm(`Are you sure you want to delete "${category.name}"?`)) {
       try {
         await deleteDoc(doc(db, "categories", category.id));
         alert("Category deleted successfully!");
-        onCategoryCreated(); // ✅ Refresh categories list
+        onCategoryCreated();
         onClose();
       } catch (error) {
         console.error("Error deleting category:", error);

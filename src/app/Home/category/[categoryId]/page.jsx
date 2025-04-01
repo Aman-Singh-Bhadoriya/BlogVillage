@@ -20,7 +20,7 @@ export default function CategoryBlogsPage() {
       const category = categories.find((cat) => cat.id === categoryId);
       if (category) {
         setCategoryTitle(category.name);
-        setDescription(category.description || ""); // ✅ Set category description
+        setDescription(category.description || "");
       }
     }
   }, [categories, categoryId]);

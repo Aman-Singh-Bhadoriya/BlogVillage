@@ -12,7 +12,6 @@ export default function BlogList() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        // ✅ Filter only posts with status "active"
         const q = query(
           collection(db, "posts"),
           where("status", "==", "active")
@@ -48,7 +47,6 @@ export default function BlogList() {
     fetchBlogs();
   }, []);
 
-  // ✅ Date formatting helper function
   const formatDate = (timestamp) => {
     if (!timestamp) return "Unknown Date";
     return new Date(timestamp).toLocaleDateString(undefined, {

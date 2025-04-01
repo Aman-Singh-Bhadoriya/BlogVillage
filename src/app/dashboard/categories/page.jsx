@@ -74,8 +74,8 @@ export default function Page() {
           <CategoryCard
             key={category.id}
             category={category}
-            onEdit={user?.role === "admin" ? handleEdit : null} // ✅ Only admins can edit
-            onDelete={user?.role === "admin" ? handleDelete : null} // ✅ Only admins can delete
+            onEdit={user?.role === "admin" ? handleEdit : null}
+            onDelete={user?.role === "admin" ? handleDelete : null}
           />
         ))}
       </Box>
