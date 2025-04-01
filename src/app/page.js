@@ -3,7 +3,7 @@
 export default function Page() {
     return (
       <div>
-        <h1>Welcome to My Next.js Project</h1>
+        <h1>Welcome</h1>
       </div>
     );
   }
