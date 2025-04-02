@@ -10,12 +10,9 @@ export function InfoSection() {
           <a href="https://github.com/Aman-Singh-Bhadoriya" className="hover:text-indigo-300">
             <FaGithub />
           </a>
-          <a href="#" className="hover:text-indigo-300">
+          <a href="https://www.linkedin.com/in/aman-singh-014bp/" className="hover:text-indigo-300">
             <FaLinkedin />
           </a>
-          {/* <a href="#" className="hover:text-indigo-300">
-            <FaTwitter />
-          </a> */}
         </div>
         <button className="bg-white text-indigo-600 px-6 py-3 rounded-full font-semibold text-lg shadow-md hover:bg-indigo-100">
           View My Work

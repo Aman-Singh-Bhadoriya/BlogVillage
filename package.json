@@ -23,6 +23,7 @@
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "autoprefixer": "^10.4.21",
+    "axios": "^1.8.4",
     "dompurify": "^3.2.4",
     "firebase": "^11.4.0",
     "jodit-react": "^5.2.15",

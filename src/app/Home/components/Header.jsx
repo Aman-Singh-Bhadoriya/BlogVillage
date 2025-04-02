@@ -63,6 +63,12 @@ export default function Header() {
               Topics
             </Link>
             <Link
+              href="/profile"
+              className="text-gray-700 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
+            >
+              About Me
+            </Link>
+            <Link
               href="/Home/Contect"
               className="text-gray-700 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
             >
