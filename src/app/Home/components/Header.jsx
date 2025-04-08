@@ -34,8 +34,7 @@ export default function Header() {
         <div className="flex justify-between h-16">
           {/* ✅ Logo */}
           <div className="flex items-center">
-
-          <Link href="/Home">
+            <Link href="/Home">
               <span className="text-primary-600 font-bold text-xl">
                 BlogSite
               </span>
@@ -63,6 +62,12 @@ export default function Header() {
               Topics
             </Link>
             <Link
+              href="/dashboard"
+              className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+            >
+              Deshboard
+            </Link>
+            <Link
               href="/profile"
               className="text-gray-700 hover:text-primary-500 dark:hover:text-primary-400 px-1 pt-1 border-b-2 border-transparent hover:border-primary-500 text-sm font-medium"
             >
@@ -80,7 +85,10 @@ export default function Header() {
           <div className="hidden md:flex items-center">
             {user ? (
               <div className="relative">
-                <button onClick={toggleDropdown} className="flex items-center gap-4 border  border-white rounded-lg px-5 py-3">
+                <button
+                  onClick={toggleDropdown}
+                  className="flex items-center gap-4 border  border-white rounded-lg px-5 py-3"
+                >
                   <img
                     src={user.photoURL || "/default-avatar.png"}
                     alt="Profile"
@@ -98,6 +106,7 @@ export default function Header() {
                     >
                       Profile
                     </Link>
+
                     <button
                       onClick={handleLogout}
                       className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
@@ -133,11 +142,19 @@ export default function Header() {
               aria-label="Toggle main menu"
             >
               {isMobileMenuOpen ? (
-                <svg className="h-6 w-6" viewBox="0 0 24 24" stroke="currentColor">
+                <svg
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
                   <path d="M6 18L18 6M6 6l12 12" strokeWidth="2" />
                 </svg>
               ) : (
-                <svg className="h-6 w-6" viewBox="0 0 24 24" stroke="currentColor">
+                <svg
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
                   <path d="M4 6h16M4 12h16M4 18h16" strokeWidth="2" />
                 </svg>
               )}
@@ -158,6 +175,12 @@ export default function Header() {
           <Link href="/Home/category" className="block px-4 py-2 text-gray-700">
             Topics
           </Link>
+          <Link
+            href="/dashboard"
+            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+          >
+            Deshboard
+          </Link>
           <Link href="/Home/Contect" className="block px-4 py-2 text-gray-700">
             Contact
           </Link>
@@ -170,7 +193,9 @@ export default function Header() {
                   className="h-8 w-8 rounded-full"
                 /> */}
                 <div className="flex justify-between w-full items-center">
-                  <p className="text-gray-900 py-2 px-4 border rounded-2xl border-white">{user.displayName || "User"}</p>
+                  <p className="text-gray-900 py-2 px-4 border rounded-2xl border-white">
+                    {user.displayName || "User"}
+                  </p>
                   <button
                     onClick={handleLogout}
                     className="text-s text-primary-50 hover:text-red-500 rounded-3xl bg-red-600 py-2 px-4"
@@ -183,10 +208,14 @@ export default function Header() {
           ) : (
             <div className="flex items-center justify-between px-4 py-3">
               <Link href="/auth/signup">
-                <button className="btn-primary bg-gray-200 p-2 rounded-lg">Sign up</button>
+                <button className="btn-primary bg-gray-200 p-2 rounded-lg">
+                  Sign up
+                </button>
               </Link>
               <Link href="/auth/login">
-                <button className="btn-secondary bg-gray-200 p-2 rounded-lg">Login</button>
+                <button className="btn-secondary bg-gray-200 p-2 rounded-lg">
+                  Login
+                </button>
               </Link>
             </div>
           )}
