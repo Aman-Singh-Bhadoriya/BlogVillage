@@ -2,17 +2,16 @@ import FeaturedBlogs from "./components/FeaturedBlogs";
 import GetinTouch from "./components/Get In Touch";
 import Hero from "./components/Hero";
 import Topics from "./components/Topics";
-import HomePage from "./components/temp";
+// import HomePage from "./components/temp";
 
 export default function Page() {
   return (
     <div className=" bg-white w-full">
 
-      <HomePage/>
-      {/* <Hero />
+      <Hero />
       <FeaturedBlogs/>
       <Topics/>
-      <GetinTouch/> */}
+      <GetinTouch/> 
     </div>
   );
 }
